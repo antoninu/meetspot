@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Center,
   Box,
@@ -10,8 +12,25 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
-const Register = (): JSX.Element => {
+const Login = (): JSX.Element => {
+  const [error, setError] = useState(false);
+  const router = useRouter();
+
+  const onSubmit = async (): Promise<void> => {
+    //TODO haga fetch
+    //const response = await fetch.
+    //if !response.ok
+
+    setError(true);
+
+    //else si todo salio bien:
+    // colocar el objeto user en el estado global
+
+    await router.push('/calendar');
+  };
+
   return (
     <Center h="100vh">
       <Box
@@ -28,11 +47,21 @@ const Register = (): JSX.Element => {
           <FormLabel mt={1}>Contraseña</FormLabel>
           <Input type="password" placeholder="***********" />
 
-          <NextLink href="/calendar">
-            <Button width="100%" mt={4} type="submit" colorScheme="blue">
-              Ingresar
-            </Button>
-          </NextLink>
+          {error && (
+            <FormHelperText color="red">
+              Hubo un error al ingresar.
+            </FormHelperText>
+          )}
+
+          <Button
+            width="100%"
+            mt={4}
+            type="submit"
+            colorScheme="blue"
+            onClick={() => onSubmit()}
+          >
+            Ingresar
+          </Button>
 
           <Center>
             <FormHelperText>
@@ -48,4 +77,4 @@ const Register = (): JSX.Element => {
   );
 };
 
-export default Register;
+export default Login;
