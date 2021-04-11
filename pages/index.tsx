@@ -1,20 +1,12 @@
-import Head from 'next/head';
+import Layout from '../components/Layout';
+import Home from 'components/Home';
 
-export default function Home() {
+const HomePage = (): JSX.Element => {
   return (
-    <>
-      <Head>
-        <title>Meetspot</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <h1>Main</h1>
-
-        <p>body</p>
-      </main>
-
-      <footer>footer</footer>
-    </>
+    <Layout title="Home | Meetspot">
+      <Home />
+    </Layout>
   );
-}
+};
+
+export default HomePage;
