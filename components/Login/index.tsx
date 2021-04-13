@@ -18,17 +18,29 @@ const Login = (): JSX.Element => {
   const [error, setError] = useState(false);
   const router = useRouter();
 
-  const onSubmit = async (): Promise<void> => {
-    //TODO haga fetch
-    //const response = await fetch.
-    //if !response.ok
-
-    setError(true);
-
-    //else si todo salio bien:
-    // colocar el objeto user en el estado global
-
-    await router.push('/calendar');
+  const onSubmit = () => {
+    const correo = (document.getElementById("email") as HTMLInputElement).value;
+    const constrasena = (document.getElementById("password") as HTMLInputElement).value;
+    let crypto = require('crypto');
+    let md5sum = crypto.createHash('md5');
+    let hash = md5sum.update(constrasena).digest('hex');
+    const body = {"correo": correo, "contrasena": hash};
+    const req = new XMLHttpRequest();
+    req.open("PUT", 'http://localhost:3001/usuarios/login', true);
+    req.setRequestHeader("Content-Type", "application/json");
+    req.responseType = "json";
+    req.onload = async function() {
+      if (req.status == 200) {
+        //else si todo salio bien:
+        // colocar el objeto user en el estado global
+        console.log(req.response[0])
+        await router.push('/calendar');
+      }
+      else {
+        setError(true);
+      }
+    };
+    req.send(JSON.stringify(body));
   };
 
   return (
@@ -43,9 +55,9 @@ const Login = (): JSX.Element => {
         <Heading mb={4}>Iniciar sesión</Heading>
         <FormControl id="login">
           <FormLabel mt={1}>Correo Electrónico</FormLabel>
-          <Input type="email" placeholder="Correo..." />
+          <Input id="email" type="email" placeholder="Correo..." />
           <FormLabel mt={1}>Contraseña</FormLabel>
-          <Input type="password" placeholder="***********" />
+          <Input id="password" type="password" placeholder="***********" />
 
           {error && (
             <FormHelperText color="red">
