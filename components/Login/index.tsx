@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import {useState, useEffect} from 'react';
+import useLogin from "./../../hooks/useLogin";
 
 import {
   Center,
@@ -15,17 +16,26 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
 const Login = (): JSX.Element => {
+  const [user, setUser] = useState({
+    "correo": "",
+    "contrasena": ""
+  });
+
   const [error, setError] = useState(false);
   const router = useRouter();
+  const { handleLoginChange } = useLogin();
 
   const onSubmit = () => {
     const correo = (document.getElementById("email") as HTMLInputElement).value;
-    const constrasena = (document.getElementById("password") as HTMLInputElement).value;
+    const contrasena = (document.getElementById("password") as HTMLInputElement).value;
+    
     let crypto = require('crypto');
     let md5sum = crypto.createHash('md5');
-    let hash = md5sum.update(constrasena).digest('hex');
+    let hash = md5sum.update(contrasena).digest('hex');
+    
     const body = {"correo": correo, "contrasena": hash};
     const req = new XMLHttpRequest();
+    
     req.open("PUT", 'http://localhost:3001/usuarios/login', true);
     req.setRequestHeader("Content-Type", "application/json");
     req.responseType = "json";
@@ -33,6 +43,15 @@ const Login = (): JSX.Element => {
       if (req.status == 200) {
         //else si todo salio bien:
         // colocar el objeto user en el estado global
+
+        setUser({
+          "correo": correo,
+          "contrasena": contrasena
+        });
+
+        const c = user.correo;
+        console.log(c);
+        
         console.log(req.response[0])
         await router.push('/calendar');
       }
@@ -55,9 +74,9 @@ const Login = (): JSX.Element => {
         <Heading mb={4}>Iniciar sesión</Heading>
         <FormControl id="login">
           <FormLabel mt={1}>Correo Electrónico</FormLabel>
-          <Input id="email" type="email" placeholder="Correo..." />
+          <Input id="email" type="email" placeholder="Correo..." onChange={handleLoginChange} />
           <FormLabel mt={1}>Contraseña</FormLabel>
-          <Input id="password" type="password" placeholder="***********" />
+          <Input id="password" type="password" placeholder="***********" onChange={handleLoginChange} />
 
           {error && (
             <FormHelperText color="red">
