@@ -1,6 +1,24 @@
-import { Box, Button, Stack, Text, Avatar } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Stack,
+  Text,
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem as ChakraMenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuIcon,
+  MenuCommand,
+  MenuDivider,
+} from '@chakra-ui/react';
 import MenuItem from 'components/Navbar/MenuItem';
 import NextLink from 'next/link';
+import useStateValue from 'hooks/useStateValue';
+import { useRouter } from 'next/router';
 
 type Props = {
   isOpen?: boolean;
@@ -8,6 +26,14 @@ type Props = {
 };
 
 const MenuLinks = ({ isOpen, privateRoute }: Props): JSX.Element => {
+  const router = useRouter();
+  const [{ user }, dispatch] = useStateValue();
+
+  const logOut = () => {
+    dispatch({ type: 'LOG_OUT' });
+    router.push('/');
+  };
+
   return (
     <Box
       display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
@@ -24,8 +50,21 @@ const MenuLinks = ({ isOpen, privateRoute }: Props): JSX.Element => {
           <>
             <MenuItem to="/calendar">Calendario</MenuItem>
             <MenuItem to="/book">Agendar</MenuItem>
-            <Text as="b">Nombre Apellido</Text>
-            <Avatar />
+
+            {user && (
+              <Text as="b">
+                {user.first_name}&nbsp;{user.last_name}{' '}
+              </Text>
+            )}
+
+            <Menu>
+              <MenuButton>
+                <Avatar />
+              </MenuButton>
+              <MenuList>
+                <ChakraMenuItem onClick={logOut}>Cerrar sesión</ChakraMenuItem>
+              </MenuList>
+            </Menu>
           </>
         ) : (
           <>

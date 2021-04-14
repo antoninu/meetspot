@@ -184,7 +184,7 @@ const events = [
   },
 ];
 
-const Calendar = (): JSX.Element => (
+const Calendar = () => (
   <div>
     <BigCalendar
       localizer={localizer}
