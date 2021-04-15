@@ -65,7 +65,13 @@ const Book = () => {
     } else {
     */
     // Asumiendo que todo esta bien
-    handleChangeInvitedList(invitedData);
+    setError(null);
+    setInvitedList([ ...invitedList, invitedData ]);
+    let append = document.createElement("div");
+    append.innerText=invitedData
+    document.getElementById("invited-list").appendChild(
+      append
+    );
     //}
   };
 
@@ -73,6 +79,7 @@ const Book = () => {
   const handleChangeInvitedList = () => async (event) => {
     setError(null);
     setInvitedList([ ...invitedList, invitedData ]);
+
     document.getElementById("invited-list").appendChild(
       <Text>{ invitedData }</Text>
     );
