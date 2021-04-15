@@ -1,7 +1,7 @@
 import Layout from '../components/Layout';
 import Book from 'components/Book';
 
-const BookPage = (): JSX.Element => {
+const BookPage = () => {
   return (
     <Layout title="Calendario | Meetspot" privateRoute>
       <Book />

@@ -73,7 +73,9 @@ const Register = () => {
             onChange={handleChange('password')}
           />
           <FormLabel mt={1}>Repite la contraseña</FormLabel>
-          <Input type="password" placeholder="***********" />
+          <Input
+            type="password"
+            placeholder="***********" />
 
           {error && <FormHelperText color="red">{error}</FormHelperText>}
 
