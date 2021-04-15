@@ -127,26 +127,31 @@ const Book = () => {
         </Select>
 
         <FormLabel mt={1}>Correos de los usuarios invitados</FormLabel>
-        <Flex alignItems="center">
+        <Flex alignItems="center" justifyContent="space-around">
           <Input
             type="email"
             placeholder="Correo invitado..."
+            width="85%"
             onChange={handleChangeInvited()}
           />
           <Button
               mt={4}
               type="submit"
               colorScheme="blue"
+              margin="0"
               onClick={handleAddInvited()}
           >
           +
           </Button>
         </Flex>
 
-        <Box id="invited-list">
-          <Text>tobia.gasparoni@gmail.com</Text>
-          <Text>giomitob@gmail.com</Text>
-          <Text>omber84@gmail.com</Text>
+        <Box id="invited-list" 
+         borderWidth="2px"
+         px={7}
+         py={3}
+         marginTop="12px"
+         borderRadius={14}>
+           <FormLabel mt={1}>Lista de usuarios invitados</FormLabel>
         </Box>
 
         <NextLink href="/calendar">

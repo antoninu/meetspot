@@ -15,6 +15,7 @@ const NavBarContainer = ({ children }) => {
       bg="primary.500"
       position="fixed"
       zIndex={999}
+      backgroundColor="white"
     >
       {children}
     </Flex>
