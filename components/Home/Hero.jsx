@@ -1,7 +1,7 @@
 import { Flex, Box, Img } from '@chakra-ui/react';
 import HeroText from 'components/Home/HeroText';
 
-const Hero = (): JSX.Element => {
+const Hero = () => {
   return (
     <Flex
       ml={[0, 14]}

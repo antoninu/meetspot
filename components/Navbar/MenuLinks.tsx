@@ -20,12 +20,8 @@ import NextLink from 'next/link';
 import useStateValue from 'hooks/useStateValue';
 import { useRouter } from 'next/router';
 
-type Props = {
-  isOpen?: boolean;
-  privateRoute?: boolean;
-};
 
-const MenuLinks = ({ isOpen, privateRoute }: Props): JSX.Element => {
+const MenuLinks = ({ isOpen, privateRoute }) => {
   const router = useRouter();
   const [{ user }, dispatch] = useStateValue();
 

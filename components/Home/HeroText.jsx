@@ -2,7 +2,7 @@ import React from 'react';
 import { Heading, Text, Button } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
-export default function HeroText(): JSX.Element {
+export default function HeroText() {
   return (
     <>
       <Heading as="h1" size="3xl" mb={4}>

@@ -52,25 +52,25 @@ const Register = () => {
           <Input
             type="name"
             placeholder="Nombre..."
-            onChange={handleChange('first_name')}
+            onChange={handleChange('nombre')}
           />
           <FormLabel mt={1}>Apellido</FormLabel>
           <Input
             type="name"
             placeholder="Apellido..."
-            onChange={handleChange('last_name')}
+            onChange={handleChange('apellido')}
           />
           <FormLabel mt={1}>Correo Electrónico</FormLabel>
           <Input
             type="email"
             placeholder="Correo..."
-            onChange={handleChange('email')}
+            onChange={handleChange('correo')}
           />
           <FormLabel mt={1}>Contraseña</FormLabel>
           <Input
             type="password"
             placeholder="***********"
-            onChange={handleChange('password')}
+            onChange={handleChange('contrasena')}
           />
           <FormLabel mt={1}>Repite la contraseña</FormLabel>
           <Input

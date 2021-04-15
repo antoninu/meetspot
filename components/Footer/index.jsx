@@ -2,7 +2,7 @@ import React from 'react';
 import { Center } from '@chakra-ui/react';
 import Section from 'components/shared/Section';
 
-export default function Footer(): JSX.Element {
+export default function Footer() {
   return (
     <footer>
       <hr />

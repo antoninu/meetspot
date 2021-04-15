@@ -2,12 +2,8 @@ import { ReactNode } from 'react';
 import { Link, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
-type Props = {
-  children: ReactNode;
-  to?: string;
-};
 
-const MenuItem = ({ children, to = '/' }: Props): JSX.Element => {
+const MenuItem = ({ children, to = '/' }) => {
   return (
     <NextLink href={to} passHref>
       <Link>

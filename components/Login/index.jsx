@@ -56,14 +56,14 @@ const Login = () => {
             id="email"
             type="email"
             placeholder="tu@gmail.com..."
-            onChange={handleChange('email')}
+            onChange={handleChange('correo')}
           />
           <FormLabel mt={1}>Contraseña</FormLabel>
           <Input
             id="password"
             type="password"
             placeholder="***********"
-            onChange={handleChange('password')}
+            onChange={handleChange('contrasena')}
           />
 
           {error && <FormHelperText color="red">{error}</FormHelperText>}

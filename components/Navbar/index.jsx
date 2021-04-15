@@ -5,11 +5,8 @@ import MenuToggle from 'components/Navbar/MenuToggle';
 import MenuLinks from 'components/Navbar/MenuLinks';
 import NavBarContainer from 'components/Navbar/NavBarContainer';
 
-type Props = {
-  privateRoute?: boolean;
-};
 
-const NavBar = ({ privateRoute }: Props): JSX.Element => {
+const NavBar = ({ privateRoute }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);

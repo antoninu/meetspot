@@ -1,6 +1,6 @@
 import Hero from 'components/Home/Hero';
 
-const Home = (): JSX.Element => {
+const Home = () => {
   return (
     <>
       <Hero />
