@@ -9,6 +9,7 @@ import {
   Select,
   Text,
   Flex,
+  Comment
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -17,6 +18,7 @@ import fetcher from 'utils/fetcher';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
+import Step4 from './Step4';
 
 /**
  * {
@@ -140,8 +142,10 @@ const Book = () => {
 
   return (
     <Box h="100vh" p={14} mt={14} maxWidth={['100%']}>
-      <Heading mb={4}>Agendar un evento</Heading>
-      {step === 0 && <Step1 setStep={setStep} handleChange={handleChange} />}
+    <Heading mb={4}>Agendar un evento</Heading>
+      {step === 0 && (
+        <Step1 setStep = {setStep} handleChange = {handleChange} />
+      )}
       {step === 1 && (
         <Step2
           setStep={setStep}
@@ -151,6 +155,9 @@ const Book = () => {
         />
       )}
       {step === 2 && <Step3 disp={disp} />}
+      {step === 2 && (
+        <Step4 eventData = {eventData} handleSubmit = {handleSubmit} />
+      )}
     </Box>
   );
 };

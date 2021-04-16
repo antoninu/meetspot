@@ -2,6 +2,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Select,
 } from '@chakra-ui/react'
@@ -9,6 +10,7 @@ import {
 function Step1({ setStep, handleChange }) {
   return (
     <FormControl id="signup">
+      <Heading>Paso 1</Heading>
       <FormLabel>Nombre</FormLabel>
       <Input
         type="name"

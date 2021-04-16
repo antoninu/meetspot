@@ -19,6 +19,8 @@ const fetcher = async (
     body: body,
   });
 
+  console.log("fetcher", response.json);
+
   return await response.json();
 };
 
