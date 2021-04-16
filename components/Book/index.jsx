@@ -8,7 +8,8 @@ import {
   Input,
   Select,
   Text,
-  Flex
+  Flex,
+  Comment
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -17,6 +18,7 @@ import fetcher from 'utils/fetcher';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
+import Step4 from './Step4';
 
 /**
  * {
@@ -117,26 +119,29 @@ const Book = () => {
   };
 
   const handleAvailability = async () => {
-    const response = await fetcher(`usuarios/${user._id}/disponibilidad`, 'GET');
-    if (response.error) {
-      setError(response.error);
-    } else {
-    console.log(response)
-    setDisp(response)
-    }
+    const response = fetcher(`usuarios/${user._id}/disponibilidad`, 'GET').then(() => {
+      if(response) {
+        if (response.error) {
+          setError(response.error);
+        } else {
+          console.log("avail", response)
+          setDisp(response)
+        }
+      }
+    });
   }
 
   return (
     <Box h="100vh" p={14} mt={14} maxWidth={['100%']}>
     <Heading mb={4}>Agendar un evento</Heading>
       {step === 0 && (
-          <Step1 setStep = {setStep} handleChange = {handleChange} />
+        <Step1 setStep = {setStep} handleChange = {handleChange} />
       )}
       {step === 1 && (
         <Step2 setStep = {setStep} handleChangeInvited = {handleChangeInvited} handleAddInvited = {handleAddInvited} handleAvailability = {handleAvailability} />
       )}
       {step === 2 && (
-        <Step3 disp = {disp} />
+        <Step4 eventData = {eventData} handleSubmit = {handleSubmit} />
       )}
     </Box>
   );
