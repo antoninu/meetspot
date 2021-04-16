@@ -5,12 +5,14 @@ import {
   Heading,
   Input,
   Select,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 function Step1({ setStep, handleChange }) {
   return (
     <FormControl id="signup">
-      <Heading>Paso 1</Heading>
+      <Heading as="h3" size="lg">
+        Paso 1
+      </Heading>
       <FormLabel>Nombre</FormLabel>
       <Input
         type="name"

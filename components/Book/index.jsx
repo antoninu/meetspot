@@ -9,7 +9,7 @@ import {
   Select,
   Text,
   Flex,
-  Comment
+  Comment,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -35,6 +35,7 @@ import Step4 from './Step4';
 const Book = () => {
   const router = useRouter();
   const [eventData, setEventData] = useState({});
+  const [ruleData, setRuleData] = useState({});
   const [invitedData, setInvitedData] = useState('');
   const [invitedList, setInvitedList] = useState([]);
   const [error, setError] = useState(null);
@@ -50,6 +51,12 @@ const Book = () => {
     setEventData({ ...eventData, [key]: event.target.value });
   };
 
+  //Manejan el estado de la regla
+  const handleChangeRule = (key) => async (event) => {
+    setError(null);
+    setRuleData({ ...ruleData, [key]: event.target.value });
+  };
+
   const handleSubmit = async () => {
     // Crear el evento
     console.log(eventData);
@@ -60,13 +67,26 @@ const Book = () => {
     if (response.error) {
       setError(response.error);
     }
+
+    console.log(ruleData);
+    const p1 = new Date(ruleData.dia);
+    p1.setHours(ruleData.horaInicio.split(':')[0]);
+    p1.setMinutes(ruleData.horaInicio.split(':')[1]);
+    ruleData.horaInicio = p1;
+
+    const p2 = new Date(ruleData.dia);
+    p2.setHours(ruleData.horaFin.split(':')[0]);
+    p2.setMinutes(ruleData.horaFin.split(':')[1]);
+    ruleData.horaFin = p2;
+
+    ruleData.unidad = p2.getDay();
+    delete ruleData.dia;
+
+    console.log(ruleData);
+
     // Crear la regla
-    const regla = {
-      unidad: 1,
-      horaInicio: new Date('April 12, 2021 14:00:00'),
-      horaFin: new Date('April 12, 2021 15:15:00'),
-    };
-    const response2 = await fetcher('reglas/', 'POST', regla);
+
+    const response2 = await fetcher('reglas/', 'POST', ruleData);
     if (response2.error) {
       setError(response2.error);
     }
@@ -85,7 +105,10 @@ const Book = () => {
       'PATCH',
     );
     if (response4.error) {
+      console.log('error');
       setError(response4.error);
+    } else {
+      await router.push('/calendar');
     }
   };
 
@@ -142,10 +165,8 @@ const Book = () => {
 
   return (
     <Box h="100vh" p={14} mt={14} maxWidth={['100%']}>
-    <Heading mb={4}>Agendar un evento</Heading>
-      {step === 0 && (
-        <Step1 setStep = {setStep} handleChange = {handleChange} />
-      )}
+      <Heading mb={4}>Agendar un evento</Heading>
+      {step === 0 && <Step1 setStep={setStep} handleChange={handleChange} />}
       {step === 1 && (
         <Step2
           setStep={setStep}
@@ -154,9 +175,15 @@ const Book = () => {
           handleAvailability={handleAvailability}
         />
       )}
-      {step === 2 && <Step3 disp={disp} />}
       {step === 2 && (
-        <Step4 eventData = {eventData} handleSubmit = {handleSubmit} />
+        <Step3
+          setStep={setStep}
+          disp={disp}
+          handleChangeRule={handleChangeRule}
+        />
+      )}
+      {step === 3 && (
+        <Step4 eventData={eventData} handleSubmit={handleSubmit} />
       )}
     </Box>
   );

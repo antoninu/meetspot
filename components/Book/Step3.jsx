@@ -5,25 +5,26 @@ import { useEffect, useState } from 'react';
 import useStateValue from 'hooks/useStateValue';
 import fetcher from 'utils/fetcher';
 import {
-    Box,
-    Button,
-    Heading,
-    FormControl,
-    FormLabel,
-    Input,
-    Select,
-    Text,
-    Flex,
-    Comment
-  } from '@chakra-ui/react';
+  Box,
+  Button,
+  Heading,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Text,
+  Flex,
+  Comment,
+  Spacer,
+} from '@chakra-ui/react';
 
 const localizer = momentLocalizer(moment);
 
 const now = new Date();
 
-function Step3({ disp }) {
+function Step3({ disp, setStep, handleChangeRule }) {
   //const [disp2, setDisp2] = useState(null);
-  const [loading, setLoading] = useState(true);
+  //const [loading, setLoading] = useState(true);
 
   console.log(disp);
 
@@ -48,6 +49,48 @@ function Step3({ disp }) {
     console.log('disp', disp);
     return (
       <div>
+        <Heading as="h3" size="lg">
+          Paso 3
+        </Heading>
+        <p>
+          Con base en tu disponibilidad, escoje el horario que mejor te convenga
+        </p>
+
+        <FormLabel mt={1}>Dia seleccionado</FormLabel>
+        <Input
+          type="date"
+          placeholder="Dia seleccionado"
+          onChange={handleChangeRule('dia')}
+        />
+
+        <FormLabel mt={1}>Hora inicio</FormLabel>
+        <Input
+          type="time"
+          placeholder="Hora inicio..."
+          onChange={handleChangeRule('horaInicio')}
+        />
+
+        <FormLabel mt={1}>Hora fin</FormLabel>
+        <Input
+          type="time"
+          placeholder="Hora fin..."
+          onChange={handleChangeRule('horaFin')}
+        />
+
+        <Button
+          width="40%"
+          mt={4}
+          type="submit"
+          colorScheme="blue"
+          onClick={() => setStep(3)}
+        >
+          Siguiente
+        </Button>
+        <Spacer></Spacer>
+        <Heading as="h4" size="md">
+          Disponibilidad
+        </Heading>
+
         <BigCalendar
           localizer={localizer}
           events={disp}
