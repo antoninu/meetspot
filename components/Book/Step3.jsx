@@ -34,7 +34,7 @@ function Step3({disp}) {
         }
     else {
         console.log("entra")
-        console.log(disp)
+        console.log("disp", disp)
         return(
         <div>
             <BigCalendar
@@ -42,7 +42,7 @@ function Step3({disp}) {
                 events={disp2}
                 defaultView = "week"
                 startAccessor= "start" 
-            endAccessor= "end"
+                endAccessor= "end"
             />
         </div> )
     }
