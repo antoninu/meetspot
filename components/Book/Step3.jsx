@@ -7,47 +7,44 @@ const localizer = momentLocalizer(moment);
 
 const now = new Date();
 
+function Step3({ disp }) {
+  //const [disp2, setDisp2] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-function Step3({disp}) {
+  console.log(disp);
 
-    const [disp2, setDisp2] = useState(null)
-    const [loading, setLoading] = useState(true)
+  //   useEffect(() => {
+  //     if (disp) {
+  //       console.log(disp);
+  //       let newDisp = disp.map((element) => {
+  //         element.start = new Date(element.start);
+  //         element.end = new Date(element.end);
+  //         return element;
+  //       });
+  //       setDisp2(newDisp);
+  //       setLoading(false);
+  //     }
+  //   }, []);
 
-    console.log(disp)
-
-
-    useEffect(()=>{
-        if(disp){
-        console.log(disp)
-        let newDisp = disp.map(element => {
-            element.start = new Date(element.start)
-            element.end = new Date(element.end)  
-            return element          
-        });
-        setDisp2(newDisp)
-        setLoading(false)
-        }
-    },[])
-
-    if(loading){
-           return  <p>Loading</p>
-        }
-    else {
-        console.log("entra")
-        console.log("disp", disp)
-        return(
-        <div>
-            <BigCalendar
-                localizer={localizer}
-                events={disp2}
-                defaultView = "week"
-                startAccessor= "start" 
-                endAccessor= "end"
-                style={{ height: 500 }}
-
-            />
-        </div> )
-    }
+  if (!disp) {
+    console.log('disp', disp);
+    return <p>Loading</p>;
+  } else {
+    console.log('entra');
+    console.log('disp', disp);
+    return (
+      <div>
+        <BigCalendar
+          localizer={localizer}
+          events={disp}
+          defaultView="week"
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
+        />
+      </div>
+    );
+  }
 }
 
 export default Step3;
