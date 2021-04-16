@@ -30,7 +30,7 @@ function Step3({disp}) {
     },[])
 
     if(loading){
-           return  <p> Loading </p>
+           return  <p>Loading</p>
         }
     else {
         console.log("entra")
@@ -43,6 +43,8 @@ function Step3({disp}) {
                 defaultView = "week"
                 startAccessor= "start" 
                 endAccessor= "end"
+                style={{ height: 500 }}
+
             />
         </div> )
     }
