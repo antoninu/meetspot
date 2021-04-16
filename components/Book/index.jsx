@@ -13,6 +13,10 @@ import {
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import useStateValue from 'hooks/useStateValue';
+import fetcher from 'utils/fetcher';
+import Step1 from './Step1';
+import Step2 from './Step2';
+import Step3 from './Step3';
 
 /**
  * {
@@ -33,6 +37,10 @@ const Book = () => {
   const [invitedList, setInvitedList] = useState([]);
   const [error, setError] = useState(null);
   const [, dispatch] = useStateValue();
+  const [disp, setDisp] = useState(null)
+
+  const [{ user }] = useStateValue();
+  const [step, setStep] = useState(0)
 
   //Manejan el estado del evento
   const handleChange = (key) => async (event) => {
@@ -41,15 +49,38 @@ const Book = () => {
   };
 
   const handleSubmit = async () => {
-    const response = await fetcher('usuarios/', 'POST', eventData);
+    // Crear el evento
+    console.log(eventData)
+    eventData.estado = "aceptado"
+    eventData.zonaHoraria = "+5"
+    const response = await fetcher('eventos/', 'POST', eventData);
 
     if (response.error) {
       setError(response.error);
-    } else {
-      dispatch({ type: 'LOG_IN', newUser: response });
-      await router.push('/calendar');
+    } 
+    // Crear la regla
+    const regla ={
+      unidad:1,
+      horaInicio: new Date('April 12, 2021 14:00:00'),
+      horaFin: new Date('April 12, 2021 15:15:00')
+    }
+    const response2 = await fetcher('reglas/', 'POST', regla);
+    if (response2.error) {
+      setError(response2.error);
+    } 
+    // Agregar la regla al evento
+    console.log("resoponses",response)
+    const response3 = await fetcher(`eventos/${response._id}/reglas/${response2._id}`, 'PATCH');
+    if (response3.error) {
+      setError(response3.error);
+    } 
+    // Agregar el evento
+    const response4 = await fetcher(`usuarios/${user._id}/eventos/${response._id}`, 'PATCH');
+    if (response4.error) {
+      setError(response4.error);
     }
   };
+  
 
   //Manejan el estado del usuario a ser invitado
   const handleChangeInvited = () => async (event) => {
@@ -85,87 +116,28 @@ const Book = () => {
     );
   };
 
+  const handleAvailability = async () => {
+    const response = await fetcher(`usuarios/${user._id}/disponibilidad`, 'GET');
+    if (response.error) {
+      setError(response.error);
+    } else {
+    console.log(response)
+    setDisp(response)
+    }
+  }
+
   return (
-    <Box h="100vh" p={14} mt={14} maxWidth={['100%', '40%']}>
-      <Heading mb={4}>Agendar un evento</Heading>
-
-      <FormControl id="signup">
-        <FormLabel>Nombre</FormLabel>
-        <Input
-          type="name"
-          placeholder="Nombre..."
-          onChange={handleChange('nombre')}
-        />
-
-        <FormLabel mt={1}>Descripción</FormLabel>
-        <Input
-          type="name"
-          placeholder="Descripción..."
-          onChange={handleChange('descripcion')}
-        />
-
-        <FormLabel mt={1}>Día inicio</FormLabel>
-        <Input
-          type="date"
-          placeholder="Día inicio..."
-          onChange={handleChange('diaInicio')}
-        />
-
-        <FormLabel mt={1}>Día fin</FormLabel>
-        <Input
-          type="date"
-          placeholder="Día fin..."
-          onChange={handleChange('diaFin')}
-        />
-
-        <FormLabel mt={1}>Frecuencia</FormLabel>
-        <Select placeholder="Seleccione una opción">
-          <option value="sinRepetir">Sin repetición</option>
-          <option value="diaria">Diaria</option>
-          <option value="semanal">Semanal</option>
-          <option value="mensual">Mensual</option>
-        </Select>
-
-        <FormLabel mt={1}>Correos de los usuarios invitados</FormLabel>
-        <Flex alignItems="center" justifyContent="space-around">
-          <Input
-            type="email"
-            placeholder="Correo invitado..."
-            width="85%"
-            onChange={handleChangeInvited()}
-          />
-          <Button
-              mt={4}
-              type="submit"
-              colorScheme="blue"
-              margin="0"
-              onClick={handleAddInvited()}
-          >
-          +
-          </Button>
-        </Flex>
-
-        <Box id="invited-list" 
-         borderWidth="2px"
-         px={7}
-         py={3}
-         marginTop="12px"
-         borderRadius={14}>
-           <FormLabel mt={1}>Lista de usuarios invitados</FormLabel>
-        </Box>
-
-        <NextLink href="/calendar">
-          <Button
-            width="100%"
-            mt={4}
-            type="submit"
-            colorScheme="blue"
-            onClick={handleSubmit}
-          >
-            Siguiente
-          </Button>
-        </NextLink>
-      </FormControl>
+    <Box h="100vh" p={14} mt={14} maxWidth={['100%']}>
+    <Heading mb={4}>Agendar un evento</Heading>
+      {step === 0 && (
+          <Step1 setStep = {setStep} handleChange = {handleChange} />
+      )}
+      {step === 1 && (
+        <Step2 setStep = {setStep} handleChangeInvited = {handleChangeInvited} handleAddInvited = {handleAddInvited} handleAvailability = {handleAvailability} />
+      )}
+      {step === 2 && (
+        <Step3 disp = {disp} />
+      )}
     </Box>
   );
 };

@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   const onSubmit = async () => {
-    const response = await fetcher('usuarios/login', 'PUT', user);
+    const response = await fetcher('usuarios/login', 'POST', user);
 
     if (response.error) {
       setError(response.error);
