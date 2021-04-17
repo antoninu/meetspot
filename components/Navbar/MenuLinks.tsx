@@ -49,7 +49,7 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
 
             {user && (
               <Text as="b">
-                {user.first_name}&nbsp;{user.last_name}{' '}
+                {user.nombre}&nbsp;{user.apellido}{' '}
               </Text>
             )}
 
