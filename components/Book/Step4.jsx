@@ -15,14 +15,20 @@ import {
   Text,
   Flex,
   Comment,
+  List,
+  ListItem,
+  ListIcon,
+  MdCheckCircle,
 } from '@chakra-ui/react';
+import stringFormatter from 'utils/stringFormatter';
 
 const localizer = momentLocalizer(moment);
 
 const now = new Date();
 
-function Step4({ eventData, handleSubmit }) {
+function Step4({ eventData, handleSubmit, invitedList, ruleData }) {
   console.log(eventData);
+  console.log(ruleData);
 
   /**
  * descripcion: "Tobia Raffaele"
@@ -38,39 +44,86 @@ nombre: "Tobia Raffaele"
         Paso 4
       </Heading>
       <br></br>
-      <Flex alignItems="center" justifyContent="space-around">
+      <Flex alignItems="center">
         <FormLabel mt={1} width="20%">
-          Nombre
+          Nombre:
         </FormLabel>
-        <Input type="name" value={eventData.nombre} readOnly />
+        <Text>{eventData.nombre}</Text>
       </Flex>
       <br></br>
-      <Flex alignItems="center" justifyContent="space-around">
+      <Flex alignItems="center">
         <FormLabel mt={1} width="20%">
-          Descripcion
+          Descripcion:
         </FormLabel>
-        <Input type="name" value={eventData.descripcion} readOnly />
+        <Text>{eventData.descripcion}</Text>
       </Flex>
       <br></br>
-      <Flex alignItems="center" justifyContent="space-around">
+      <Flex alignItems="center">
         <FormLabel mt={1} width="20%">
-          Frecuencia
+          Dia inicio:
         </FormLabel>
-        <Input type="name" value={eventData.frecuencia} readOnly />
+        <Text>{eventData.diaInicio} </Text>
       </Flex>
       <br></br>
-      <Flex alignItems="center" justifyContent="space-around">
+      <Flex alignItems="center">
         <FormLabel mt={1} width="20%">
-          Dia inicio
+          Dia fin:
         </FormLabel>
-        <Input type="name" value={eventData.diaInicio} readOnly />
+        <Text> {eventData.diaFin}</Text>
       </Flex>
       <br></br>
-      <Flex alignItems="center" justifyContent="space-around">
+      <Flex alignItems="center">
         <FormLabel mt={1} width="20%">
-          Dia fin
+          Frecuencia:
         </FormLabel>
-        <Input type="name" value={eventData.diaFin} readOnly />
+        <Text>{eventData.frecuencia}</Text>
+      </Flex>
+      <br></br>
+      <Flex alignItems="center">
+        <FormLabel mt={1} width="20%">
+          Dia evento:
+        </FormLabel>
+        <Text> {ruleData.dia}</Text>
+      </Flex>
+      <br></br>
+      <Flex alignItems="center">
+        <FormLabel mt={1} width="20%">
+          Hora inicio:
+        </FormLabel>
+        <Text> {ruleData.horaInicio}</Text>
+      </Flex>
+      <br></br>
+      <Flex alignItems="center">
+        <FormLabel mt={1} width="20%">
+          Hora fin:
+        </FormLabel>
+        <Text> {ruleData.horaFin}</Text>
+      </Flex>
+      <br></br>
+
+      <Flex alignItems="center">
+        <FormLabel mt={1} width="20%">
+          Lista invitados:
+        </FormLabel>
+        <List spacing={3}>
+          {invitedList.length > 0 ? (
+            invitedList.map((invitado, id) => (
+              <ListItem key={id}>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                {invitado
+                  ? stringFormatter(
+                      invitado.nombre + ' ' + invitado.apellido,
+                      'name',
+                    ) +
+                    ' - ' +
+                    invitado.correo
+                  : ''}
+              </ListItem>
+            ))
+          ) : (
+            <Text>Ninguno</Text>
+          )}
+        </List>
       </Flex>
       <br></br>
       <Button

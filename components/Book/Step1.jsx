@@ -7,7 +7,7 @@ import {
   Select,
 } from '@chakra-ui/react';
 
-function Step1({ setStep, handleChange }) {
+function Step1({ setStep, handleChange, step1terminado }) {
   return (
     <FormControl id="signup">
       <Heading as="h3" size="lg">
@@ -47,7 +47,6 @@ function Step1({ setStep, handleChange }) {
         onChange={handleChange('frecuencia')}
       >
         <option value="sinRepetir">Sin repetición</option>
-        <option value="diaria">Diaria</option>
         <option value="semanal">Semanal</option>
         <option value="mensual">Mensual</option>
       </Select>
@@ -57,7 +56,9 @@ function Step1({ setStep, handleChange }) {
         mt={4}
         type="submit"
         colorScheme="blue"
-        onClick={() => setStep(1)}
+        onClick={() => {
+          if (step1terminado()) setStep(1);
+        }}
       >
         Siguiente
       </Button>

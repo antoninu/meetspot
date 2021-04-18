@@ -27,11 +27,26 @@ const Register = () => {
   };
 
   const handleSubmit = async () => {
+    console.log(userData);
+    if (
+      !userData ||
+      !userData.nombre ||
+      !userData.apellido ||
+      !userData.correo ||
+      !userData.contrasena ||
+      !userData.contrasena_rep
+    )
+      return setError('Por favor complete los campos');
+
+    if (userData.contrasena !== userData.contrasena_rep)
+      return setError('Las contraseñas no coinciden');
+
     const response = await fetcher('usuarios/', 'POST', userData);
 
     if (response.error) {
       setError(response.error);
     } else {
+      setError(null);
       dispatch({ type: 'LOG_IN', newUser: response });
       await router.push('/calendar');
     }
@@ -75,7 +90,9 @@ const Register = () => {
           <FormLabel mt={1}>Repite la contraseña</FormLabel>
           <Input
             type="password"
-            placeholder="***********" />
+            placeholder="***********"
+            onChange={handleChange('contrasena_rep')}
+          />
 
           {error && <FormHelperText color="red">{error}</FormHelperText>}
 

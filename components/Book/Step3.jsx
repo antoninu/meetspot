@@ -22,7 +22,13 @@ const localizer = momentLocalizer(moment);
 
 const now = new Date();
 
-function Step3({ disp, setStep, handleChangeRule }) {
+function Step3({
+  disp,
+  setStep,
+  handleChangeRule,
+  step3terminado,
+  verficarDisponibilidad,
+}) {
   //const [disp2, setDisp2] = useState(null);
   //const [loading, setLoading] = useState(true);
 
@@ -53,7 +59,8 @@ function Step3({ disp, setStep, handleChangeRule }) {
           Paso 3
         </Heading>
         <p>
-          Con base en tu disponibilidad, escoje el horario que mejor te convenga
+          Con base en tu disponibilidad y en la de tus invitados, escoje el
+          horario que mejor te convenga
         </p>
 
         <FormLabel mt={1}>Dia seleccionado</FormLabel>
@@ -70,25 +77,39 @@ function Step3({ disp, setStep, handleChangeRule }) {
           onChange={handleChangeRule('horaInicio')}
         />
 
-        <FormLabel mt={1}>Hora fin</FormLabel>
+        <FormLabel mt={1}>Hora finalizacion </FormLabel>
         <Input
           type="time"
           placeholder="Hora fin..."
           onChange={handleChangeRule('horaFin')}
         />
-
-        <Button
-          width="40%"
-          mt={4}
-          type="submit"
-          colorScheme="blue"
-          onClick={() => setStep(3)}
-        >
-          Siguiente
-        </Button>
+        <Flex>
+          <Button
+            width="40%"
+            mt={4}
+            colorScheme="blue"
+            mx={4}
+            onClick={() => {
+              verficarDisponibilidad();
+            }}
+          >
+            Verificar Disponibilidad
+          </Button>
+          <Button
+            width="40%"
+            mt={4}
+            type="submit"
+            colorScheme="blue"
+            onClick={() => {
+              if (step3terminado) setStep(3);
+            }}
+          >
+            Siguiente
+          </Button>
+        </Flex>
         <Spacer></Spacer>
-        <Heading as="h4" size="md">
-          Disponibilidad
+        <Heading as="h4" size="md" p={2}>
+          Horarios en los que todos están disponibles:
         </Heading>
 
         <BigCalendar
