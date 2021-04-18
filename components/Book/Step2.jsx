@@ -7,14 +7,20 @@ import {
   Flex,
   Heading,
   Text,
+  IconButton,
 } from '@chakra-ui/react';
+import stringFormatter from 'utils/stringFormatter';
+import { SmallCloseIcon } from '@chakra-ui/icons';
 
 function Step2({
   handleChangeInvited,
   handleAddInvited,
   setStep,
   handleAvailability,
+  invitedListState,
 }) {
+  const [invitedList, setInvitedList] = invitedListState;
+
   return (
     <div>
       <Heading as="h3" size="lg">
@@ -49,6 +55,32 @@ function Step2({
           borderRadius={14}
         >
           <FormLabel mt={1}>Lista de usuarios invitados</FormLabel>
+          {invitedList.map((invitado, id) => (
+            <Text key={id} py={2}>
+              {invitado
+                ? stringFormatter(
+                    invitado.nombre + ' ' + invitado.apellido,
+                    'name',
+                  ) +
+                  ' - ' +
+                  invitado.correo
+                : ''}
+              <IconButton
+                icon={<SmallCloseIcon />}
+                colorScheme="blue"
+                variant="outline"
+                size="sm"
+                mx={2}
+                onClick={() =>
+                  setInvitedList(
+                    invitedList.filter((el) => {
+                      return el.nombre != invitado.nombre;
+                    }),
+                  )
+                }
+              />
+            </Text>
+          ))}
         </Box>
 
         <Button

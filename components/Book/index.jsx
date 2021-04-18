@@ -4,6 +4,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import useStateValue from 'hooks/useStateValue';
 import fetcher from 'utils/fetcher';
+import localDate from 'utils/localDate';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
@@ -68,7 +69,7 @@ const Book = () => {
 
   const step1terminado = () => {
     if (
-      !fechasValidas(new Date(eventData.diaFin), new Date(eventData.diaInicio))
+      false //!fechasValidas(new Date(eventData.diaFin), new Date(eventData.diaInicio))
     ) {
       toast({
         title: 'Error en las fechas',
@@ -154,19 +155,45 @@ const Book = () => {
   };
 
   const handleAddInvited = () => async () => {
-    /**const response = await fetcher('usuarios/', 'POST', invitedData);
+    if (!invitedData)
+      return toast({
+        title: 'Error',
+        description: `Busca usuarios por su correo`,
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+    if (invitedList.includes(invitedData))
+      return toast({
+        title: 'Error',
+        description: `El usuario ${invitedData} ya fue incluido en la lista`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    if (invitedData === user.correo)
+      return toast({
+        title: 'Error',
+        description: 'No es necesario que te agregues a ti mismo',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    const response = await fetcher(`usuarios/correo/${invitedData}`, 'GET');
 
     if (response.error) {
       setError(response.error);
-    } else {
-    */
+      return toast({
+        title: 'Error',
+        description: response.error,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
     // Asumiendo que todo esta bien
     setError(null);
-    setInvitedList([...invitedList, invitedData]);
-    let append = document.createElement('div');
-    append.innerText = invitedData;
-    document.getElementById('invited-list').appendChild(append);
-    //}
+    setInvitedList([...invitedList, response]);
   };
 
   //Manejan el estado de la lista de usuarios a ser invitados
@@ -180,10 +207,15 @@ const Book = () => {
   };
 
   const handleAvailability = async () => {
-    const response = await fetcher(
-      `usuarios/${user._id}/disponibilidad`,
-      'GET',
-    );
+    const correos = invitedList.map((inv) => inv.correo);
+    correos.push(user.correo);
+    const body = {
+      correos,
+      fechaInicio: localDate(eventData.diaInicio),
+      fechaFin: localDate(eventData.diaFin),
+    };
+    console.log('body', body);
+    const response = await fetcher(`usuarios/disponibilidad`, 'POST', body);
     if (response.error) {
       setError(response.error);
     } else {
@@ -214,6 +246,7 @@ const Book = () => {
           handleChangeInvited={handleChangeInvited}
           handleAddInvited={handleAddInvited}
           handleAvailability={handleAvailability}
+          invitedListState={[invitedList, setInvitedList]}
         />
       )}
       {step === 2 && (

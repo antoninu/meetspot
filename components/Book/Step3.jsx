@@ -53,7 +53,8 @@ function Step3({ disp, setStep, handleChangeRule }) {
           Paso 3
         </Heading>
         <p>
-          Con base en tu disponibilidad, escoje el horario que mejor te convenga
+          Con base en tu disponibilidad y en la de tus invitados, escoje el
+          horario que mejor te convenga
         </p>
 
         <FormLabel mt={1}>Dia seleccionado</FormLabel>
@@ -87,8 +88,8 @@ function Step3({ disp, setStep, handleChangeRule }) {
           Siguiente
         </Button>
         <Spacer></Spacer>
-        <Heading as="h4" size="md">
-          Disponibilidad
+        <Heading as="h4" size="md" p={2}>
+          Horarios en los que todos están disponibles:
         </Heading>
 
         <BigCalendar
