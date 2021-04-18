@@ -71,7 +71,7 @@ function Step3({ disp, setStep, handleChangeRule }) {
           onChange={handleChangeRule('horaInicio')}
         />
 
-        <FormLabel mt={1}>Hora fin</FormLabel>
+        <FormLabel mt={1}>Hora finalizacion </FormLabel>
         <Input
           type="time"
           placeholder="Hora fin..."

@@ -41,24 +41,90 @@ const Book = () => {
     revisarFechas();
   }, [eventData]);
 
-  //Manejan el estado del evento
+  useEffect(() => {
+    revisarFechasRegla();
+    revisarHoras();
+  }, [ruleData]);
+
+  // Manejan el estado del evento
   const handleChange = (key) => async (event) => {
     setError(null);
     setEventData({ ...eventData, [key]: event.target.value });
   };
 
+  // Revisa que la fecha de inicio del evento sea antes que la fecha de fin
   const revisarFechas = () => {
     if (eventData && eventData.diaInicio && eventData.diaFin) {
       if (
         !fechasValidas(
-          new Date(eventData.diaFin),
-          new Date(eventData.diaInicio),
+          localDate(eventData.diaFin),
+          localDate(eventData.diaInicio),
         )
       ) {
         console.log('toast');
         toast({
           title: 'Error en las fechas',
           description: 'El día final no puede ser anterior al día de inicio',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    }
+  };
+
+  // Revisa que la fecha escogida para el evento esté en el rango especificado
+  const revisarFechasRegla = () => {
+    if (
+      ruleData &&
+      ruleData.dia &&
+      eventData &&
+      eventData.diaInicio &&
+      eventData.diaFin
+    ) {
+      if (
+        !fechasValidas(localDate(eventData.diaFin), localDate(ruleData.dia))
+      ) {
+        console.log('toast');
+        toast({
+          title: 'Error en las fechas',
+          description:
+            'El día escogido para el evento no puede ser después del rango escogido en el Paso 1',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+      if (
+        !fechasValidas(localDate(ruleData.dia), localDate(eventData.diaInicio))
+      ) {
+        console.log('toast');
+        toast({
+          title: 'Error en las fechas',
+          description:
+            'El día escogido para el evento no puede ser antes del rango escogido en el Paso 1',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    }
+  };
+
+  // Revisa que la hora de inicio del evento sea antes que la de finalización
+  const revisarHoras = () => {
+    if (ruleData && ruleData.horaInicio && ruleData.horaFin) {
+      const horaInicio = new Date();
+      horaInicio.setHours(ruleData.horaInicio.split(':')[0]);
+      horaInicio.setMinutes(ruleData.horaInicio.split(':')[1]);
+      const horaFin = new Date();
+      horaFin.setHours(ruleData.horaFin.split(':')[0]);
+      horaFin.setMinutes(ruleData.horaFin.split(':')[1]);
+      if (!fechasValidas(horaFin, horaInicio)) {
+        console.log('toast');
+        toast({
+          title: 'Error en las horas',
+          description: 'La hora final no puede ser menor que la hora de inicio',
           status: 'warning',
           duration: 3000,
           isClosable: true,
@@ -163,7 +229,7 @@ const Book = () => {
         duration: 3000,
         isClosable: true,
       });
-    if (invitedList.includes(invitedData))
+    if (invitedList.filter((e) => e.correo === invitedData).length > 0)
       return toast({
         title: 'Error',
         description: `El usuario ${invitedData} ya fue incluido en la lista`,

@@ -46,6 +46,7 @@ const Register = () => {
     if (response.error) {
       setError(response.error);
     } else {
+      setError(null);
       dispatch({ type: 'LOG_IN', newUser: response });
       await router.push('/calendar');
     }
