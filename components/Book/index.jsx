@@ -42,8 +42,8 @@ const Book = () => {
   }, [eventData]);
 
   useEffect(() => {
-    revisarFechasRegla();
-    revisarHoras();
+    //revisarFechasRegla();
+    //revisarHoras();
     revisarFrecuenciaMensual();
   }, [ruleData]);
 
@@ -95,6 +95,7 @@ const Book = () => {
           duration: 3000,
           isClosable: true,
         });
+        return false;
       }
       if (
         !fechasValidas(localDate(ruleData.dia), localDate(eventData.diaInicio))
@@ -108,7 +109,9 @@ const Book = () => {
           duration: 3000,
           isClosable: true,
         });
+        return false;
       }
+      return true;
     }
   };
 
@@ -124,7 +127,9 @@ const Book = () => {
           duration: 3000,
           isClosable: true,
         });
+        return false;
       }
+      return true;
     }
   };
 
@@ -184,7 +189,7 @@ const Book = () => {
       });
       return false;
     } else {
-      return true;
+      return revisarFechasRegla() && revisarHoras();
     }
   };
 
@@ -197,49 +202,67 @@ const Book = () => {
     setRuleData({ ...ruleData, [key]: event.target.value });
   };
 
-  // Crear el evento para todos los participantes
-  const handleSubmit = async () => {
+  // Construir body de solicitud para verificar la disponbilidad o crear un evento
+  const buildBody = () => {
     // Correos
     const correos = invitedList.map((inv) => inv.correo);
     correos.push(user.correo);
 
     // Evento
     console.log(eventData);
-    eventData.estado = 'aceptado';
-    eventData.zonaHoraria = '+5';
-    eventData.diaInicio = localDate(ruleData.dia);
-    eventData.diaFin = localDate(eventData.diaFin);
+    console.log(ruleData);
+
+    const evento = JSON.parse(JSON.stringify(eventData));
+
+    evento.estado = 'aceptado';
+    evento.zonaHoraria = '+5';
+    if (eventData.frecuencia === 'sinRepetir') {
+      evento.diaInicio = localDate(ruleData.dia);
+    } else if (eventData.frecuencia === 'semanal') {
+      evento.diaInicio = getLastSunday(localDate(ruleData.dia));
+    } else if (eventData.frecuencia === 'mensual') {
+      evento.diaInicio = getFirstDayMonth(localDate(ruleData.dia));
+    }
+    evento.diaFin = localDate(eventData.diaFin);
 
     // Regla
-    console.log(ruleData);
-    const p1 = localDate(ruleData.dia);
-    p1.setHours(ruleData.horaInicio.split(':')[0]);
-    p1.setMinutes(ruleData.horaInicio.split(':')[1]);
-    ruleData.horaInicio = p1;
-
-    const p2 = localDate(ruleData.dia);
-    p2.setHours(ruleData.horaFin.split(':')[0]);
-    p2.setMinutes(ruleData.horaFin.split(':')[1]);
-    ruleData.horaFin = p2;
+    const rule = JSON.parse(JSON.stringify(ruleData));
 
     if (eventData.frecuencia === 'sinRepetir') {
-      ruleData.unidad = 0;
+      rule.unidad = 0;
     } else if (eventData.frecuencia === 'semanal') {
-      ruleData.unidad = ruleData.dia.getDay();
+      rule.unidad = localDate(ruleData.dia).getDay();
     } else if (eventData.frecuencia === 'mensual') {
-      ruleData.unidad = ruleData.dia.getDate();
+      rule.unidad = localDate(ruleData.dia).getDate();
     }
+    rule.horaInicio = new Date(evento.diaInicio);
+    rule.horaFin = new Date(evento.diaInicio);
+    console.log('1', rule);
+    console.log('2', ruleData);
+    rule.horaInicio.setHours(ruleData.horaInicio.split(':')[0]);
+    rule.horaInicio.setMinutes(ruleData.horaInicio.split(':')[1]);
+    console.log('3', rule);
+    console.log('4', ruleData);
 
-    delete ruleData.dia;
-    eventData.reglas = [ruleData];
+    rule.horaFin.setHours(ruleData.horaFin.split(':')[0]);
+    rule.horaFin.setMinutes(ruleData.horaFin.split(':')[1]);
+    console.log(rule);
+
+    evento.reglas = [rule];
 
     const body = {
       correos,
-      evento: eventData,
+      evento: evento,
     };
 
     console.log(body);
 
+    return body;
+  };
+
+  // Crear el evento para todos los participantes
+  const handleSubmit = async () => {
+    const body = buildBody();
     const response = await fetcher('eventos/crearEventoCompleto', 'POST', body);
 
     if (response.error) {
@@ -261,33 +284,20 @@ const Book = () => {
       isClosable: true,
     });
     await router.push('/calendar');
+  };
 
-    // // Crear la regla
+  // Obtene el último domingo de una fecha dada
+  const getLastSunday = (d) => {
+    var t = new Date(d);
+    t.setDate(t.getDate() - t.getDay());
+    return t;
+  };
 
-    // const response2 = await fetcher('reglas/', 'POST', ruleData);
-    // if (response2.error) {
-    //   setError(response2.error);
-    // }
-    // // Agregar la regla al evento
-    // console.log('resoponses', response);
-    // const response3 = await fetcher(
-    //   `eventos/${response._id}/reglas/${response2._id}`,
-    //   'PATCH',
-    // );
-    // if (response3.error) {
-    //   setError(response3.error);
-    // }
-    // // Agregar el evento
-    // const response4 = await fetcher(
-    //   `usuarios/${user._id}/eventos/${response._id}`,
-    //   'PATCH',
-    // );
-    // if (response4.error) {
-    //   console.log('error');
-    //   setError(response4.error);
-    // } else {
-    //   await router.push('/calendar');
-    // }
+  // Obtiene el primer día del mes de una fecha dada
+  const getFirstDayMonth = (d) => {
+    var t = new Date(d);
+    t.setDate(1);
+    return t;
   };
 
   //Manejan el estado del usuario a ser invitado
@@ -338,16 +348,6 @@ const Book = () => {
     setInvitedList([...invitedList, response]);
   };
 
-  //Manejan el estado de la lista de usuarios a ser invitados
-  const handleChangeInvitedList = () => async (event) => {
-    setError(null);
-    setInvitedList([...invitedList, invitedData]);
-
-    document
-      .getElementById('invited-list')
-      .appendChild(<Text>{invitedData}</Text>);
-  };
-
   const handleAvailability = async () => {
     const correos = invitedList.map((inv) => inv.correo);
     correos.push(user.correo);
@@ -359,7 +359,13 @@ const Book = () => {
     console.log('body', body);
     const response = await fetcher(`usuarios/disponibilidad`, 'POST', body);
     if (response.error) {
-      setError(response.error);
+      return toast({
+        title: 'Error',
+        description: response.error,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     } else {
       //console.log('Disponibilidad: ', response);
       let newDisp = response.map((element) => {
@@ -370,6 +376,31 @@ const Book = () => {
       //console.log('Con dates: ', newDisp);
       setDisp(newDisp);
     }
+  };
+
+  const verficarDisponibilidad = async () => {
+    const body = buildBody();
+    const response = await fetcher(
+      `eventos/verificarDisponibilidad`,
+      'POST',
+      body,
+    );
+    if (response.error) {
+      return toast({
+        title: 'Error',
+        description: response.error,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    return toast({
+      title: 'Verificado',
+      description: response.mensaje,
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   return (
@@ -397,6 +428,7 @@ const Book = () => {
           disp={disp}
           handleChangeRule={handleChangeRule}
           step3terminado={step3terminado}
+          verficarDisponibilidad={verficarDisponibilidad}
         />
       )}
       {step === 3 && (

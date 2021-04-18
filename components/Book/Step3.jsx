@@ -22,7 +22,13 @@ const localizer = momentLocalizer(moment);
 
 const now = new Date();
 
-function Step3({ disp, setStep, handleChangeRule, step3terminado }) {
+function Step3({
+  disp,
+  setStep,
+  handleChangeRule,
+  step3terminado,
+  verficarDisponibilidad,
+}) {
   //const [disp2, setDisp2] = useState(null);
   //const [loading, setLoading] = useState(true);
 
@@ -77,18 +83,30 @@ function Step3({ disp, setStep, handleChangeRule, step3terminado }) {
           placeholder="Hora fin..."
           onChange={handleChangeRule('horaFin')}
         />
-
-        <Button
-          width="40%"
-          mt={4}
-          type="submit"
-          colorScheme="blue"
-          onClick={() => {
-            if (step3terminado) setStep(3);
-          }}
-        >
-          Siguiente
-        </Button>
+        <Flex>
+          <Button
+            width="40%"
+            mt={4}
+            colorScheme="blue"
+            mx={4}
+            onClick={() => {
+              verficarDisponibilidad();
+            }}
+          >
+            Verificar Disponibilidad
+          </Button>
+          <Button
+            width="40%"
+            mt={4}
+            type="submit"
+            colorScheme="blue"
+            onClick={() => {
+              if (step3terminado) setStep(3);
+            }}
+          >
+            Siguiente
+          </Button>
+        </Flex>
         <Spacer></Spacer>
         <Heading as="h4" size="md" p={2}>
           Horarios en los que todos están disponibles:
