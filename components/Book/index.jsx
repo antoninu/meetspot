@@ -1,16 +1,5 @@
-import { useState } from 'react';
-import {
-  Box,
-  Button,
-  Heading,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Text,
-  Flex,
-  Comment,
-} from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { Box, Heading, Text, useToast } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import useStateValue from 'hooks/useStateValue';
@@ -42,14 +31,60 @@ const Book = () => {
   const [, dispatch] = useStateValue();
   const [disp, setDisp] = useState(null);
 
+  const toast = useToast();
+
   const [{ user }] = useStateValue();
   const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    revisarFechas();
+  }, [eventData]);
 
   //Manejan el estado del evento
   const handleChange = (key) => async (event) => {
     setError(null);
     setEventData({ ...eventData, [key]: event.target.value });
   };
+
+  const revisarFechas = () => {
+    if (eventData && eventData.diaInicio && eventData.diaFin) {
+      if (
+        !fechasValidas(
+          new Date(eventData.diaFin),
+          new Date(eventData.diaInicio),
+        )
+      ) {
+        console.log('toast');
+        toast({
+          title: 'Error en las fechas',
+          description: 'El día final no puede ser anterior al día de inicio',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    }
+  };
+
+  const step1terminado = () => {
+    if (
+      !fechasValidas(new Date(eventData.diaFin), new Date(eventData.diaInicio))
+    ) {
+      toast({
+        title: 'Error en las fechas',
+        description: 'El día final no puede ser anterior al día de inicio',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const fechasValidas = (fechaMayor, fechaMenor) =>
+    fechaMayor.getTime() >= fechaMenor.getTime();
 
   //Manejan el estado de la regla
   const handleChangeRule = (key) => async (event) => {
@@ -166,7 +201,13 @@ const Book = () => {
   return (
     <Box h="100vh" p={14} mt={14} maxWidth={['100%']}>
       <Heading mb={4}>Agendar un evento</Heading>
-      {step === 0 && <Step1 setStep={setStep} handleChange={handleChange} />}
+      {step === 0 && (
+        <Step1
+          setStep={setStep}
+          handleChange={handleChange}
+          step1terminado={step1terminado}
+        />
+      )}
       {step === 1 && (
         <Step2
           setStep={setStep}

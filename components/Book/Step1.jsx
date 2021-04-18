@@ -7,7 +7,7 @@ import {
   Select,
 } from '@chakra-ui/react';
 
-function Step1({ setStep, handleChange }) {
+function Step1({ setStep, handleChange, step1terminado }) {
   return (
     <FormControl id="signup">
       <Heading as="h3" size="lg">
@@ -57,7 +57,9 @@ function Step1({ setStep, handleChange }) {
         mt={4}
         type="submit"
         colorScheme="blue"
-        onClick={() => setStep(1)}
+        onClick={() => {
+          if (step1terminado()) setStep(1);
+        }}
       >
         Siguiente
       </Button>
