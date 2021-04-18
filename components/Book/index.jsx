@@ -44,6 +44,7 @@ const Book = () => {
   useEffect(() => {
     revisarFechasRegla();
     revisarHoras();
+    revisarFrecuenciaMensual();
   }, [ruleData]);
 
   // Manejan el estado del evento
@@ -114,13 +115,7 @@ const Book = () => {
   // Revisa que la hora de inicio del evento sea antes que la de finalización
   const revisarHoras = () => {
     if (ruleData && ruleData.horaInicio && ruleData.horaFin) {
-      const horaInicio = new Date();
-      horaInicio.setHours(ruleData.horaInicio.split(':')[0]);
-      horaInicio.setMinutes(ruleData.horaInicio.split(':')[1]);
-      const horaFin = new Date();
-      horaFin.setHours(ruleData.horaFin.split(':')[0]);
-      horaFin.setMinutes(ruleData.horaFin.split(':')[1]);
-      if (!fechasValidas(horaFin, horaInicio)) {
+      if (!horasValidas(ruleData.horaInicio, ruleData.horaFin)) {
         console.log('toast');
         toast({
           title: 'Error en las horas',
@@ -129,6 +124,34 @@ const Book = () => {
           duration: 3000,
           isClosable: true,
         });
+      }
+    }
+  };
+
+  const horasValidas = (horaInicioP, horaFinP) => {
+    const horaInicio = new Date();
+    horaInicio.setHours(horaInicioP.split(':')[0]);
+    horaInicio.setMinutes(horaInicioP.split(':')[1]);
+    const horaFin = new Date();
+    horaFin.setHours(horaFinP.split(':')[0]);
+    horaFin.setMinutes(horaFinP.split(':')[1]);
+    return fechasValidas(horaFin, horaInicio);
+  };
+
+  const revisarFrecuenciaMensual = () => {
+    if (ruleData && ruleData.dia && eventData && eventData.frecuencia) {
+      if (eventData.frecuencia === 'mensual') {
+        const dia = localDate(ruleData.dia).getDate();
+        if (dia > 28) {
+          toast({
+            title: 'Error en el dia',
+            description:
+              'Como se escogió frecuencia semanal, no se puede escoger un día después del 28',
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
+        }
       }
     }
   };
@@ -150,6 +173,21 @@ const Book = () => {
     }
   };
 
+  const step3terminado = () => {
+    if (!horasValidas(ruleData.horaInicio, ruleData.horaFin)) {
+      toast({
+        title: 'Error en las fechas',
+        description: 'La hora final no puede ser menor que la hora de inicio',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const fechasValidas = (fechaMayor, fechaMenor) =>
     fechaMayor.getTime() >= fechaMenor.getTime();
 
@@ -159,59 +197,97 @@ const Book = () => {
     setRuleData({ ...ruleData, [key]: event.target.value });
   };
 
+  // Crear el evento para todos los participantes
   const handleSubmit = async () => {
-    // Crear el evento
+    // Correos
+    const correos = invitedList.map((inv) => inv.correo);
+    correos.push(user.correo);
+
+    // Evento
     console.log(eventData);
     eventData.estado = 'aceptado';
     eventData.zonaHoraria = '+5';
-    const response = await fetcher('eventos/', 'POST', eventData);
+    eventData.diaInicio = localDate(ruleData.dia);
+    eventData.diaFin = localDate(eventData.diaFin);
 
-    if (response.error) {
-      setError(response.error);
-    }
-
+    // Regla
     console.log(ruleData);
-    const p1 = new Date(ruleData.dia);
+    const p1 = localDate(ruleData.dia);
     p1.setHours(ruleData.horaInicio.split(':')[0]);
     p1.setMinutes(ruleData.horaInicio.split(':')[1]);
     ruleData.horaInicio = p1;
 
-    const p2 = new Date(ruleData.dia);
+    const p2 = localDate(ruleData.dia);
     p2.setHours(ruleData.horaFin.split(':')[0]);
     p2.setMinutes(ruleData.horaFin.split(':')[1]);
     ruleData.horaFin = p2;
 
-    ruleData.unidad = p2.getDay();
+    if (eventData.frecuencia === 'sinRepetir') {
+      ruleData.unidad = 0;
+    } else if (eventData.frecuencia === 'semanal') {
+      ruleData.unidad = ruleData.dia.getDay();
+    } else if (eventData.frecuencia === 'mensual') {
+      ruleData.unidad = ruleData.dia.getDate();
+    }
+
     delete ruleData.dia;
+    eventData.reglas = [ruleData];
 
-    console.log(ruleData);
+    const body = {
+      correos,
+      evento: eventData,
+    };
 
-    // Crear la regla
+    console.log(body);
 
-    const response2 = await fetcher('reglas/', 'POST', ruleData);
-    if (response2.error) {
-      setError(response2.error);
+    const response = await fetcher('eventos/crearEventoCompleto', 'POST', body);
+
+    if (response.error) {
+      return toast({
+        title: 'Error',
+        description: response.error,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
-    // Agregar la regla al evento
-    console.log('resoponses', response);
-    const response3 = await fetcher(
-      `eventos/${response._id}/reglas/${response2._id}`,
-      'PATCH',
-    );
-    if (response3.error) {
-      setError(response3.error);
-    }
-    // Agregar el evento
-    const response4 = await fetcher(
-      `usuarios/${user._id}/eventos/${response._id}`,
-      'PATCH',
-    );
-    if (response4.error) {
-      console.log('error');
-      setError(response4.error);
-    } else {
-      await router.push('/calendar');
-    }
+
+    toast({
+      title: 'Evento creado',
+      description:
+        'El evento se ha creado exitosamente y ha quedado añadido en tu horario y en el de tus invitados',
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
+    await router.push('/calendar');
+
+    // // Crear la regla
+
+    // const response2 = await fetcher('reglas/', 'POST', ruleData);
+    // if (response2.error) {
+    //   setError(response2.error);
+    // }
+    // // Agregar la regla al evento
+    // console.log('resoponses', response);
+    // const response3 = await fetcher(
+    //   `eventos/${response._id}/reglas/${response2._id}`,
+    //   'PATCH',
+    // );
+    // if (response3.error) {
+    //   setError(response3.error);
+    // }
+    // // Agregar el evento
+    // const response4 = await fetcher(
+    //   `usuarios/${user._id}/eventos/${response._id}`,
+    //   'PATCH',
+    // );
+    // if (response4.error) {
+    //   console.log('error');
+    //   setError(response4.error);
+    // } else {
+    //   await router.push('/calendar');
+    // }
   };
 
   //Manejan el estado del usuario a ser invitado
@@ -320,10 +396,16 @@ const Book = () => {
           setStep={setStep}
           disp={disp}
           handleChangeRule={handleChangeRule}
+          step3terminado={step3terminado}
         />
       )}
       {step === 3 && (
-        <Step4 eventData={eventData} handleSubmit={handleSubmit} />
+        <Step4
+          eventData={eventData}
+          handleSubmit={handleSubmit}
+          invitedList={invitedList}
+          ruleData={ruleData}
+        />
       )}
     </Box>
   );

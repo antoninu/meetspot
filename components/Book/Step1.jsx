@@ -47,7 +47,6 @@ function Step1({ setStep, handleChange, step1terminado }) {
         onChange={handleChange('frecuencia')}
       >
         <option value="sinRepetir">Sin repetición</option>
-        <option value="diaria">Diaria</option>
         <option value="semanal">Semanal</option>
         <option value="mensual">Mensual</option>
       </Select>

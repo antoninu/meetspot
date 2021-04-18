@@ -22,7 +22,7 @@ const localizer = momentLocalizer(moment);
 
 const now = new Date();
 
-function Step3({ disp, setStep, handleChangeRule }) {
+function Step3({ disp, setStep, handleChangeRule, step3terminado }) {
   //const [disp2, setDisp2] = useState(null);
   //const [loading, setLoading] = useState(true);
 
@@ -83,7 +83,9 @@ function Step3({ disp, setStep, handleChangeRule }) {
           mt={4}
           type="submit"
           colorScheme="blue"
-          onClick={() => setStep(3)}
+          onClick={() => {
+            if (step3terminado) setStep(3);
+          }}
         >
           Siguiente
         </Button>
