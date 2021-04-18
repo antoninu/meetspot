@@ -113,6 +113,7 @@ const Book = () => {
       }
       return true;
     }
+    return true;
   };
 
   // Revisa que la hora de inicio del evento sea antes que la de finalización
@@ -131,6 +132,7 @@ const Book = () => {
       }
       return true;
     }
+    return true;
   };
 
   const horasValidas = (horaInicioP, horaFinP) => {
@@ -160,7 +162,9 @@ const Book = () => {
         }
         return true;
       }
+      return true;
     }
+    return true;
   };
 
   const step1terminado = () => {
@@ -182,6 +186,9 @@ const Book = () => {
 
   const step3terminado = () => {
     console.log('step 3 entra');
+    console.log(revisarHoras());
+    console.log(revisarFechasRegla());
+    console.log(revisarFrecuenciaMensual());
     return revisarHoras() && revisarFechasRegla() && revisarFrecuenciaMensual();
   };
 
