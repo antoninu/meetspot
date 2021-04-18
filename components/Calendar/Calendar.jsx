@@ -1,5 +1,6 @@
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import { useState } from 'react';
 
 const localizer = momentLocalizer(moment);
 
@@ -184,11 +185,13 @@ const events = [
   },
 ];
 
-const Calendar = () => (
+
+
+const Calendar = ({eventos}) => (
   <div>
     <BigCalendar
       localizer={localizer}
-      events={events}
+      events={eventos}
       startAccessor="start"
       endAccessor="end"
       style={{ height: 500 }}
