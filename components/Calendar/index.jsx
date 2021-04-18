@@ -2,12 +2,16 @@ import { Box, Button, Heading } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import BigCalendar from './Calendar';
 import useStateValue from 'hooks/useStateValue';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import fetcher from 'utils/fetcher';
 
 const Calendar = () => {
   const [{ user }] = useStateValue();
   const [eventos, setEventos] = useState([]);
+
+  useEffect(() => {
+    getEvents();
+  }, []);
 
   const getEvents = async () => {
     const response = await fetcher(
@@ -34,7 +38,6 @@ const Calendar = () => {
   };
 
   console.log(user);
-  getEvents();
 
   return (
     <Box minH="100vh" p={14} mt={14}>

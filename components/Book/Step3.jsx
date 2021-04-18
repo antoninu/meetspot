@@ -101,7 +101,7 @@ function Step3({
             type="submit"
             colorScheme="blue"
             onClick={() => {
-              if (step3terminado) setStep(3);
+              if (step3terminado()) setStep(3);
             }}
           >
             Siguiente

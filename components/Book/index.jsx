@@ -42,8 +42,8 @@ const Book = () => {
   }, [eventData]);
 
   useEffect(() => {
-    //revisarFechasRegla();
-    //revisarHoras();
+    revisarFechasRegla();
+    revisarHoras();
     revisarFrecuenciaMensual();
   }, [ruleData]);
 
@@ -91,7 +91,7 @@ const Book = () => {
           title: 'Error en las fechas',
           description:
             'El día escogido para el evento no puede ser después del rango escogido en el Paso 1',
-          status: 'warning',
+          status: 'error',
           duration: 3000,
           isClosable: true,
         });
@@ -105,7 +105,7 @@ const Book = () => {
           title: 'Error en las fechas',
           description:
             'El día escogido para el evento no puede ser antes del rango escogido en el Paso 1',
-          status: 'warning',
+          status: 'error',
           duration: 3000,
           isClosable: true,
         });
@@ -123,7 +123,7 @@ const Book = () => {
         toast({
           title: 'Error en las horas',
           description: 'La hora final no puede ser menor que la hora de inicio',
-          status: 'warning',
+          status: 'error',
           duration: 3000,
           isClosable: true,
         });
@@ -151,19 +151,21 @@ const Book = () => {
           toast({
             title: 'Error en el dia',
             description:
-              'Como se escogió frecuencia semanal, no se puede escoger un día después del 28',
+              'Como se escogió frecuencia mensual, no se puede escoger un día después del 28',
             status: 'error',
             duration: 3000,
             isClosable: true,
           });
+          return false;
         }
+        return true;
       }
     }
   };
 
   const step1terminado = () => {
     if (
-      false //!fechasValidas(new Date(eventData.diaFin), new Date(eventData.diaInicio))
+      !fechasValidas(new Date(eventData.diaFin), new Date(eventData.diaInicio))
     ) {
       toast({
         title: 'Error en las fechas',
@@ -179,18 +181,8 @@ const Book = () => {
   };
 
   const step3terminado = () => {
-    if (!horasValidas(ruleData.horaInicio, ruleData.horaFin)) {
-      toast({
-        title: 'Error en las fechas',
-        description: 'La hora final no puede ser menor que la hora de inicio',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-      return false;
-    } else {
-      return revisarFechasRegla() && revisarHoras();
-    }
+    console.log('step 3 entra');
+    return revisarHoras() && revisarFechasRegla() && revisarFrecuenciaMensual();
   };
 
   const fechasValidas = (fechaMayor, fechaMenor) =>

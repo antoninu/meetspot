@@ -55,32 +55,36 @@ function Step2({
           borderRadius={14}
         >
           <FormLabel mt={1}>Lista de usuarios invitados</FormLabel>
-          {invitedList.map((invitado, id) => (
-            <Text key={id} py={2}>
-              {invitado
-                ? stringFormatter(
-                    invitado.nombre + ' ' + invitado.apellido,
-                    'name',
-                  ) +
-                  ' - ' +
-                  invitado.correo
-                : ''}
-              <IconButton
-                icon={<SmallCloseIcon />}
-                colorScheme="blue"
-                variant="outline"
-                size="sm"
-                mx={2}
-                onClick={() =>
-                  setInvitedList(
-                    invitedList.filter((el) => {
-                      return el.nombre != invitado.nombre;
-                    }),
-                  )
-                }
-              />
-            </Text>
-          ))}
+          {invitedList.length > 0 ? (
+            invitedList.map((invitado, id) => (
+              <Text key={id} py={2}>
+                {invitado
+                  ? stringFormatter(
+                      invitado.nombre + ' ' + invitado.apellido,
+                      'name',
+                    ) +
+                    ' - ' +
+                    invitado.correo
+                  : ''}
+                <IconButton
+                  icon={<SmallCloseIcon />}
+                  colorScheme="blue"
+                  variant="outline"
+                  size="sm"
+                  mx={2}
+                  onClick={() =>
+                    setInvitedList(
+                      invitedList.filter((el) => {
+                        return el.nombre != invitado.nombre;
+                      }),
+                    )
+                  }
+                />
+              </Text>
+            ))
+          ) : (
+            <Text>Ninguno</Text>
+          )}
         </Box>
 
         <Button
