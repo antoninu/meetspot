@@ -21,7 +21,6 @@ const Calendar = () => {
     if (response.error) {
       setError(response.error);
     } else {
-      //console.log('Eventos: ', response);
       let events = response.map((element) => {
         let elemento = {};
         elemento.start = new Date(element.start);
@@ -31,18 +30,19 @@ const Calendar = () => {
         elemento.desc = element.descripcion;
         return elemento;
       });
-      //console.log('Con dates: ', events);
-      //console.log("type", typeof(events))
+
       setEventos(events);
     }
   };
 
-  console.log(user);
-
   return (
-    <Box minH="100vh" p={14} mt={14}>
+    <Box
+      minH="100vh"
+      p={[7, 7, 14]}
+      mt={14}
+      textAlign={['center', 'center', 'inherit']}
+    >
       <Heading mb={4}>Mi Calendario</Heading>
-
       <NextLink href="/book">
         <Button my={4} colorScheme="blue">
           Agendar un evento

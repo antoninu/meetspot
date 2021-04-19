@@ -10,8 +10,8 @@ import {
 function Step1({ setStep, handleChange, step1terminado }) {
   return (
     <FormControl id="signup">
-      <Heading as="h3" size="lg">
-        Paso 1
+      <Heading as="h3" size="lg" mb={7} textAlign="center">
+        Crea tu evento
       </Heading>
       <FormLabel>Nombre</FormLabel>
       <Input

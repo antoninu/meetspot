@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, Heading, Text, useToast } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { Box, Heading, useToast, Center } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import useStateValue from 'hooks/useStateValue';
 import fetcher from 'utils/fetcher';
@@ -9,18 +8,7 @@ import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
 import Step4 from './Step4';
-
-/**
- * {
-    "nombre":"nombre",
-    "descripcion": "descripcion",
-    "diaInicio": "{{todayDate}}",
-    "diaFin": "{{todayDate}}",
-    "frecuencia": "diaria",
-    "estado": "aceptado",
-    "zonaHoraria": "+5",
-} 
- */
+import Stepper from './Stepper';
 
 const Book = () => {
   const router = useRouter();
@@ -28,8 +16,7 @@ const Book = () => {
   const [ruleData, setRuleData] = useState({});
   const [invitedData, setInvitedData] = useState('');
   const [invitedList, setInvitedList] = useState([]);
-  const [error, setError] = useState(null);
-  const [, dispatch] = useStateValue();
+  const [, setError] = useState(null);
   const [disp, setDisp] = useState(null);
 
   const toast = useToast();
@@ -403,42 +390,47 @@ const Book = () => {
   };
 
   return (
-    <Box h="100vh" p={14} mt={14} maxWidth={['100%']}>
-      <Heading mb={4}>Agendar un evento</Heading>
-      {step === 0 && (
-        <Step1
-          setStep={setStep}
-          handleChange={handleChange}
-          step1terminado={step1terminado}
-        />
-      )}
-      {step === 1 && (
-        <Step2
-          setStep={setStep}
-          handleChangeInvited={handleChangeInvited}
-          handleAddInvited={handleAddInvited}
-          handleAvailability={handleAvailability}
-          invitedListState={[invitedList, setInvitedList]}
-        />
-      )}
-      {step === 2 && (
-        <Step3
-          setStep={setStep}
-          disp={disp}
-          handleChangeRule={handleChangeRule}
-          step3terminado={step3terminado}
-          verficarDisponibilidad={verficarDisponibilidad}
-        />
-      )}
-      {step === 3 && (
-        <Step4
-          eventData={eventData}
-          handleSubmit={handleSubmit}
-          invitedList={invitedList}
-          ruleData={ruleData}
-        />
-      )}
-    </Box>
+    <Center minH="80vh" py={[14]} mt={14}>
+      <Box borderWidth="2px" p={7} borderRadius={14}>
+        <Heading mb={4} textAlign="center">
+          Agendar un evento
+        </Heading>
+        <Stepper step={step} setStep={setStep} />
+        {step === 0 && (
+          <Step1
+            setStep={setStep}
+            handleChange={handleChange}
+            step1terminado={step1terminado}
+          />
+        )}
+        {step === 1 && (
+          <Step2
+            setStep={setStep}
+            handleChangeInvited={handleChangeInvited}
+            handleAddInvited={handleAddInvited}
+            handleAvailability={handleAvailability}
+            invitedListState={[invitedList, setInvitedList]}
+          />
+        )}
+        {step === 2 && (
+          <Step3
+            setStep={setStep}
+            disp={disp}
+            handleChangeRule={handleChangeRule}
+            step3terminado={step3terminado}
+            verficarDisponibilidad={verficarDisponibilidad}
+          />
+        )}
+        {step === 3 && (
+          <Step4
+            eventData={eventData}
+            handleSubmit={handleSubmit}
+            invitedList={invitedList}
+            ruleData={ruleData}
+          />
+        )}
+      </Box>
+    </Center>
   );
 };
 

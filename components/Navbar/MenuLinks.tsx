@@ -19,7 +19,7 @@ import MenuItem from 'components/Navbar/MenuItem';
 import NextLink from 'next/link';
 import useStateValue from 'hooks/useStateValue';
 import { useRouter } from 'next/router';
-
+import stringFormatter from 'utils/stringFormatter';
 
 const MenuLinks = ({ isOpen, privateRoute }) => {
   const router = useRouter();
@@ -49,7 +49,7 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
 
             {user && (
               <Text as="b">
-                {user.nombre}&nbsp;{user.apellido}{' '}
+                {stringFormatter(user.nombre + ' ' + user.apellido, 'name')}
               </Text>
             )}
 

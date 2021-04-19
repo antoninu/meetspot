@@ -8,6 +8,7 @@ import {
   Heading,
   Text,
   IconButton,
+  useToast,
 } from '@chakra-ui/react';
 import stringFormatter from 'utils/stringFormatter';
 import { SmallCloseIcon } from '@chakra-ui/icons';
@@ -20,11 +21,12 @@ function Step2({
   invitedListState,
 }) {
   const [invitedList, setInvitedList] = invitedListState;
+  const toast = useToast();
 
   return (
     <div>
-      <Heading as="h3" size="lg">
-        Paso 2
+      <Heading as="h3" size="lg" mb={7} textAlign="center">
+        Invita a tus compañeros
       </Heading>
       <FormControl>
         <FormLabel mt={1}>Correos de los usuarios invitados</FormLabel>
@@ -54,7 +56,7 @@ function Step2({
           marginTop="12px"
           borderRadius={14}
         >
-          <FormLabel mt={1}>Lista de usuarios invitados</FormLabel>
+          <FormLabel mt={1}>Usuarios invitados</FormLabel>
           {invitedList.length > 0 ? (
             invitedList.map((invitado, id) => (
               <Text key={id} py={2}>
@@ -68,17 +70,24 @@ function Step2({
                   : ''}
                 <IconButton
                   icon={<SmallCloseIcon />}
-                  colorScheme="blue"
+                  colorScheme="red"
                   variant="outline"
                   size="sm"
                   mx={2}
-                  onClick={() =>
+                  onClick={() => {
                     setInvitedList(
                       invitedList.filter((el) => {
                         return el.nombre != invitado.nombre;
                       }),
-                    )
-                  }
+                    );
+                    toast({
+                      title: 'Invitado eliminado',
+                      description: `${invitado.nombre} ya no será invitado a tu evento.`,
+                      status: 'warning',
+                      duration: 3000,
+                      isClosable: true,
+                    });
+                  }}
                 />
               </Text>
             ))

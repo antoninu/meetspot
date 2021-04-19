@@ -22,8 +22,8 @@ const Layout = ({ children, title = 'Meetspot', privateRoute = false }) => {
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Flex direction="column" h="100%">
-        <Navbar privateRoute={privateRoute} />
+      <Navbar privateRoute={privateRoute} />
+      <Flex direction="column" minH="100vh">
         <Box flex="1 0 auto">{children}</Box>
         <Box flexShrink={0}>
           <Footer />

@@ -20,8 +20,6 @@ import {
 
 const localizer = momentLocalizer(moment);
 
-const now = new Date();
-
 function Step3({
   disp,
   setStep,
@@ -29,24 +27,6 @@ function Step3({
   step3terminado,
   verficarDisponibilidad,
 }) {
-  //const [disp2, setDisp2] = useState(null);
-  //const [loading, setLoading] = useState(true);
-
-  console.log(disp);
-
-  //   useEffect(() => {
-  //     if (disp) {
-  //       console.log(disp);
-  //       let newDisp = disp.map((element) => {
-  //         element.start = new Date(element.start);
-  //         element.end = new Date(element.end);
-  //         return element;
-  //       });
-  //       setDisp2(newDisp);
-  //       setLoading(false);
-  //     }
-  //   }, []);
-
   if (!disp) {
     console.log('disp', disp);
     return <p>Loading</p>;
@@ -55,8 +35,8 @@ function Step3({
     console.log('disp', disp);
     return (
       <div>
-        <Heading as="h3" size="lg">
-          Paso 3
+        <Heading as="h3" size="lg" mb={7} textAlign="center">
+          Verifica sus disponibilidades
         </Heading>
         <p>
           Con base en tu disponibilidad y en la de tus invitados, escoje el
@@ -83,30 +63,17 @@ function Step3({
           placeholder="Hora fin..."
           onChange={handleChangeRule('horaFin')}
         />
-        <Flex>
-          <Button
-            width="40%"
-            mt={4}
-            colorScheme="blue"
-            mx={4}
-            onClick={() => {
-              verficarDisponibilidad();
-            }}
-          >
-            Verificar Disponibilidad
-          </Button>
-          <Button
-            width="40%"
-            mt={4}
-            type="submit"
-            colorScheme="blue"
-            onClick={() => {
-              if (step3terminado()) setStep(3);
-            }}
-          >
-            Siguiente
-          </Button>
-        </Flex>
+        <Button
+          w="100%"
+          mt={4}
+          colorScheme="blue"
+          mr={4}
+          onClick={() => {
+            verficarDisponibilidad();
+          }}
+        >
+          Verificar Disponibilidad
+        </Button>
         <Spacer></Spacer>
         <Heading as="h4" size="md" p={2}>
           Horarios en los que todos están disponibles:
@@ -120,6 +87,17 @@ function Step3({
           endAccessor="end"
           style={{ height: 500 }}
         />
+        <Button
+          w="100%"
+          mt={4}
+          type="submit"
+          colorScheme="blue"
+          onClick={() => {
+            if (step3terminado()) setStep(3);
+          }}
+        >
+          Siguiente
+        </Button>
       </div>
     );
   }
