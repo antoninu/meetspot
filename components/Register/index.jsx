@@ -47,7 +47,9 @@ const Register = () => {
       setError(response.error);
     } else {
       setError(null);
-      dispatch({ type: 'LOG_IN', newUser: response });
+      const user = {'apellido':response.apellido, 'nombre': response.nombre, 'correo':response.correo, '_id':response._id};
+      dispatch({ type: 'LOG_IN', newUser: user });
+      localStorage.setItem("user", JSON.stringify(user));
       await router.push('/calendar');
     }
   };

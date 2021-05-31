@@ -35,7 +35,9 @@ const Login = () => {
       setError(response.error);
     } else {
       // set user
-      dispatch({ type: 'LOG_IN', newUser: response });
+      const user = {'apellido':response.apellido, 'nombre': response.nombre, 'correo':response.correo, '_id':response._id};
+      dispatch({ type: 'LOG_IN', newUser: user });
+      localStorage.setItem("user", JSON.stringify(user));
       await router.push('/calendar');
     }
   };

@@ -10,41 +10,60 @@ const Calendar = () => {
   const [eventos, setEventos] = useState([]);
 
   useEffect(() => {
-    getEvents();
-  }, []);
+    if(user!=undefined) {
+      getEvents();
+    }
+  }, [user]);
 
   const getEvents = async () => {
-    const response = await fetcher(
-      `usuarios/${user._id}/eventosFuturos`,
-      'GET',
-    );
-    if (response.error) {
-      setError(response.error);
+    if (navigator.onLine) {
+      const response = await fetcher(
+        `usuarios/${user._id}/eventosFuturos`,
+        'GET',
+      );
+      if (response.error) {
+        setError(response.error);
+      } else {
+        let events = response.map((element) => {
+          let elemento = {};
+          elemento.start = new Date(element.start);
+          elemento.end = new Date(element.end);
+          elemento.title = element.title;
+          elemento.id = element.id;
+          elemento.desc = element.descripcion;
+          return elemento;
+        });
+        localStorage.setItem('events', JSON.stringify(events));
+        setEventos(events);
+      }
     } else {
-      let events = response.map((element) => {
-        let elemento = {};
-        elemento.start = new Date(element.start);
-        elemento.end = new Date(element.end);
-        elemento.title = element.title;
-        elemento.id = element.id;
-        elemento.desc = element.descripcion;
-        return elemento;
-      });
-
-      setEventos(events);
+      if (localStorage.getItem('events') === null) {
+        setEventos([]);
+      } else {
+        const storedEvents = JSON.parse(localStorage.getItem('events')).map((element) => {
+          let elemento = {};
+          elemento.start = new Date(element.start);
+          elemento.end = new Date(element.end);
+          elemento.title = element.title;
+          elemento.id = element.id;
+          elemento.desc = element.descripcion;
+          return elemento;
+        });
+        setEventos(storedEvents);
+      }
     }
   };
 
   return (
     <Box
-      minH="100vh"
+      minH='100vh'
       p={[7, 7, 14]}
       mt={14}
       textAlign={['center', 'center', 'inherit']}
     >
       <Heading mb={4}>Mi Calendario</Heading>
-      <NextLink href="/book">
-        <Button my={4} colorScheme="blue">
+      <NextLink href='/book'>
+        <Button my={4} colorScheme='blue'>
           Agendar un evento
         </Button>
       </NextLink>
