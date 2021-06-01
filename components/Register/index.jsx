@@ -27,7 +27,6 @@ const Register = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(userData);
     if (
       !userData ||
       !userData.nombre ||

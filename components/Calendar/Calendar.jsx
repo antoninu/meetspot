@@ -9,7 +9,7 @@ const Calendar = ({ eventos }) => {
     <Box>
       <BigCalendar
         localizer={localizer}
-        onSelectEvent={(event) => console.log(event)}
+        onSelectEvent={(event) => {}}
         events={eventos}
         startAccessor="start"
         endAccessor="end"

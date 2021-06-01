@@ -49,7 +49,6 @@ const Book = () => {
           localDate(eventData.diaInicio),
         )
       ) {
-        console.log('toast');
         toast({
           title: 'Error en las fechas',
           description: 'El día final no puede ser anterior al día de inicio',
@@ -73,7 +72,6 @@ const Book = () => {
       if (
         !fechasValidas(localDate(eventData.diaFin), localDate(ruleData.dia))
       ) {
-        console.log('toast');
         toast({
           title: 'Error en las fechas',
           description:
@@ -87,7 +85,6 @@ const Book = () => {
       if (
         !fechasValidas(localDate(ruleData.dia), localDate(eventData.diaInicio))
       ) {
-        console.log('toast');
         toast({
           title: 'Error en las fechas',
           description:
@@ -107,7 +104,6 @@ const Book = () => {
   const revisarHoras = () => {
     if (ruleData && ruleData.horaInicio && ruleData.horaFin) {
       if (!horasValidas(ruleData.horaInicio, ruleData.horaFin)) {
-        console.log('toast');
         toast({
           title: 'Error en las horas',
           description: 'La hora final no puede ser menor que la hora de inicio',
@@ -172,10 +168,6 @@ const Book = () => {
   };
 
   const step3terminado = () => {
-    console.log('step 3 entra');
-    console.log(revisarHoras());
-    console.log(revisarFechasRegla());
-    console.log(revisarFrecuenciaMensual());
     return revisarHoras() && revisarFechasRegla() && revisarFrecuenciaMensual();
   };
 
@@ -195,9 +187,6 @@ const Book = () => {
     correos.push(user.correo);
 
     // Evento
-    console.log(eventData);
-    console.log(ruleData);
-
     const evento = JSON.parse(JSON.stringify(eventData));
 
     evento.estado = 'aceptado';
@@ -223,16 +212,11 @@ const Book = () => {
     }
     rule.horaInicio = new Date(evento.diaInicio);
     rule.horaFin = new Date(evento.diaInicio);
-    console.log('1', rule);
-    console.log('2', ruleData);
     rule.horaInicio.setHours(ruleData.horaInicio.split(':')[0]);
     rule.horaInicio.setMinutes(ruleData.horaInicio.split(':')[1]);
-    console.log('3', rule);
-    console.log('4', ruleData);
 
     rule.horaFin.setHours(ruleData.horaFin.split(':')[0]);
     rule.horaFin.setMinutes(ruleData.horaFin.split(':')[1]);
-    console.log(rule);
 
     evento.reglas = [rule];
 
@@ -240,8 +224,6 @@ const Book = () => {
       correos,
       evento: evento,
     };
-
-    console.log(body);
 
     return body;
   };
@@ -342,7 +324,6 @@ const Book = () => {
       fechaInicio: localDate(eventData.diaInicio),
       fechaFin: localDate(eventData.diaFin),
     };
-    console.log('body', body);
     const response = await fetcher(`usuarios/disponibilidad`, 'POST', body);
     if (response.error) {
       return toast({
@@ -353,13 +334,11 @@ const Book = () => {
         isClosable: true,
       });
     } else {
-      //console.log('Disponibilidad: ', response);
       let newDisp = response.map((element) => {
         element.start = new Date(element.start);
         element.end = new Date(element.end);
         return element;
       });
-      //console.log('Con dates: ', newDisp);
       setDisp(newDisp);
     }
   };

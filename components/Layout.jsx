@@ -17,7 +17,7 @@ const Layout = ({ children, title = 'Meetspot', privateRoute = false }) => {
     if (process.browser && privateRoute && !user) {
       router.push('/');
     }
-    if(process.browser && user){
+    else if (process.browser && !privateRoute && user) {
       router.push('/calendar');
     }
   },[])
