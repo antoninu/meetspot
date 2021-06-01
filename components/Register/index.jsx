@@ -9,6 +9,7 @@ import {
   FormHelperText,
   Link,
   Heading,
+  useToast,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -20,6 +21,7 @@ const Register = () => {
   const [userData, setUserData] = useState({});
   const [error, setError] = useState(null);
   const [, dispatch] = useStateValue();
+  const toast = useToast();
 
   const handleChange = (key) => async (event) => {
     setError(null);
@@ -27,6 +29,18 @@ const Register = () => {
   };
 
   const handleSubmit = async () => {
+    if(process.browser){
+      if(!navigator.onLine){
+        toast({
+          title: 'Sin conexión a internet',
+          description: 'Este servicio solo se puede usar con una conexión a internet',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+    }
     if (
       !userData ||
       !userData.nombre ||

@@ -8,7 +8,7 @@ const exportConfig = {
 
     return config;
   },
-  exportTrailingSlash: true,
+  trailingSlash: true,
 };
 
 module.exports = withOffline(exportConfig);

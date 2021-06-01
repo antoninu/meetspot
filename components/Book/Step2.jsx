@@ -18,6 +18,7 @@ function Step2({
   handleAddInvited,
   setStep,
   handleAvailability,
+  step2terminado,
   invitedListState,
 }) {
   const [invitedList, setInvitedList] = invitedListState;
@@ -102,9 +103,10 @@ function Step2({
           type="submit"
           colorScheme="blue"
           onClick={() => {
+            if(step2terminado()){
             handleAvailability();
             setStep(2);
-          }}
+          }}}
         >
           Siguiente
         </Button>

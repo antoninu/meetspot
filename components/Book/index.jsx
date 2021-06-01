@@ -34,6 +34,23 @@ const Book = () => {
     revisarFrecuenciaMensual();
   }, [ruleData]);
 
+  //revisa que se tenga conexiono se envia una notificación de error
+  const verificarConexion = () => {
+    if (process.browser) {
+      if (!navigator.onLine) {
+        toast({
+          title: 'Sin conexión a internet',
+          description: 'Este servicio solo se puede usar con una conexión a internet',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+        return false;
+      }
+    }
+    return true;
+  };
+
   // Manejan el estado del evento
   const handleChange = (key) => async (event) => {
     setError(null);
@@ -151,6 +168,7 @@ const Book = () => {
   };
 
   const step1terminado = () => {
+    if (!verificarConexion()) return;
     if (
       !fechasValidas(new Date(eventData.diaFin), new Date(eventData.diaInicio))
     ) {
@@ -167,7 +185,13 @@ const Book = () => {
     }
   };
 
+  const step2terminado = () => {
+    if (!verificarConexion()) return false;
+    return true;
+  };
+
   const step3terminado = () => {
+    if (!verificarConexion()) return;
     return revisarHoras() && revisarFechasRegla() && revisarFrecuenciaMensual();
   };
 
@@ -230,6 +254,7 @@ const Book = () => {
 
   // Crear el evento para todos los participantes
   const handleSubmit = async () => {
+    if (!verificarConexion()) return;
     const body = buildBody();
     const response = await fetcher('eventos/crearEventoCompleto', 'POST', body);
 
@@ -275,6 +300,7 @@ const Book = () => {
   };
 
   const handleAddInvited = () => async () => {
+    if (!verificarConexion()) return;
     if (!invitedData)
       return toast({
         title: 'Error',
@@ -317,6 +343,7 @@ const Book = () => {
   };
 
   const handleAvailability = async () => {
+    if (!verificarConexion()) return;
     const correos = invitedList.map((inv) => inv.correo);
     correos.push(user.correo);
     const body = {
@@ -344,6 +371,7 @@ const Book = () => {
   };
 
   const verficarDisponibilidad = async () => {
+    if (!verificarConexion()) return;
     const body = buildBody();
     const response = await fetcher(
       `eventos/verificarDisponibilidad`,
@@ -369,9 +397,9 @@ const Book = () => {
   };
 
   return (
-    <Center minH="80vh" py={[14]} mt={14}>
-      <Box borderWidth="2px" p={7} borderRadius={14}>
-        <Heading mb={4} textAlign="center">
+    <Center minH='80vh' py={[14]} mt={14}>
+      <Box borderWidth='2px' p={7} borderRadius={14}>
+        <Heading mb={4} textAlign='center'>
           Agendar un evento
         </Heading>
         <Stepper step={step} setStep={setStep} />
@@ -388,6 +416,7 @@ const Book = () => {
             handleChangeInvited={handleChangeInvited}
             handleAddInvited={handleAddInvited}
             handleAvailability={handleAvailability}
+            step2terminado={step2terminado}
             invitedListState={[invitedList, setInvitedList]}
           />
         )}

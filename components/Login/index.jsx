@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import fetcher from 'utils/fetcher';
 
 import {
@@ -11,6 +11,7 @@ import {
   FormHelperText,
   Link,
   Heading,
+  useToast,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -23,12 +24,25 @@ const Login = () => {
 
   const [error, setError] = useState(false);
   const router = useRouter();
+  const toast = useToast();
 
   const handleChange = (key) => async (event) => {
     setUser({ ...user, [key]: event.target.value });
   };
 
   const onSubmit = async () => {
+    if(process.browser){
+      if(!navigator.onLine){
+        toast({
+          title: 'Sin conexión a internet',
+          description: 'Este servicio solo se puede usar con una conexión a internet',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+    }
     const response = await fetcher('usuarios/login', 'POST', user);
 
     if (response.error) {
