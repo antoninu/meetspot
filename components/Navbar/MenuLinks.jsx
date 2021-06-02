@@ -27,7 +27,7 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
 
   const logOut = () => {
     dispatch({ type: 'LOG_OUT' });
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
     router.push('/');
   };
 
@@ -42,6 +42,7 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
         align="center"
         justify={['center', 'space-between', 'flex-end', 'flex-end']}
         direction={['column', 'row', 'row', 'row']}
+        mb={3}
       >
         {privateRoute ? (
           <>
