@@ -15,6 +15,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import fetcher from 'utils/fetcher';
 import useStateValue from 'hooks/useStateValue';
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 const Register = () => {
   const router = useRouter();
@@ -29,11 +30,12 @@ const Register = () => {
   };
 
   const handleSubmit = async () => {
-    if(process.browser){
-      if(!navigator.onLine){
+    if (process.browser) {
+      if (!navigator.onLine) {
         toast({
           title: 'Sin conexión a internet',
-          description: 'Este servicio solo se puede usar con una conexión a internet',
+          description:
+            'Este servicio solo se puede usar con una conexión a internet',
           status: 'warning',
           duration: 3000,
           isClosable: true,
@@ -60,9 +62,14 @@ const Register = () => {
       setError(response.error);
     } else {
       setError(null);
-      const user = {'apellido':response.apellido, 'nombre': response.nombre, 'correo':response.correo, '_id':response._id};
+      const user = {
+        apellido: response.apellido,
+        nombre: response.nombre,
+        correo: response.correo,
+        _id: response._id,
+      };
       dispatch({ type: 'LOG_IN', newUser: user });
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
       await router.push('/calendar');
     }
   };
@@ -102,13 +109,19 @@ const Register = () => {
             placeholder="***********"
             onChange={handleChange('contrasena')}
           />
+          <PasswordStrengthBar
+            password={userData.contrasena}
+            shortScoreWord={
+              userData.contrasena ? 'La contraseña es muy corta' : ''
+            }
+            scoreWords={['Muy débil', 'Débil', 'Aceptable', 'Bien', 'Fuerte']}
+          />
           <FormLabel mt={1}>Repite la contraseña</FormLabel>
           <Input
             type="password"
             placeholder="***********"
             onChange={handleChange('contrasena_rep')}
           />
-
           {error && <FormHelperText color="red">{error}</FormHelperText>}
 
           <Button
