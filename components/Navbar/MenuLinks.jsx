@@ -27,6 +27,7 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
 
   const logOut = () => {
     dispatch({ type: 'LOG_OUT' });
+    localStorage.removeItem("user");
     router.push('/');
   };
 

@@ -28,11 +28,8 @@ function Step3({
   verficarDisponibilidad,
 }) {
   if (!disp) {
-    console.log('disp', disp);
     return <p>Loading</p>;
   } else {
-    console.log('entra');
-    console.log('disp', disp);
     return (
       <div>
         <Heading as="h3" size="lg" mb={7} textAlign="center">

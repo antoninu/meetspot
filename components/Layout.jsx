@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Navbar from 'components/Navbar';
 import Footer from 'components/Footer';
@@ -9,11 +9,19 @@ import useStateValue from 'hooks/useStateValue';
 
 const Layout = ({ children, title = 'Meetspot', privateRoute = false }) => {
   const router = useRouter();
-  const [{ user }] = useStateValue();
+  const [, dispatch] = useStateValue();
 
-  if (process.browser && privateRoute && !user) {
-    router.push('/');
-  }
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem("user"));
+    dispatch({ type: 'LOG_IN', newUser: user });
+    if (process.browser && privateRoute && !user) {
+      router.push('/');
+    }
+    else if (process.browser && !privateRoute && user) {
+      router.push('/calendar');
+    }
+  },[])
+
 
   return (
     <>

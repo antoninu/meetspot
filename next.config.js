@@ -1,4 +1,5 @@
-module.exports = {
+const withOffline = require('next-offline');
+const exportConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -7,8 +8,7 @@ module.exports = {
 
     return config;
   },
-  i18n: {
-    locales: ['es-CO'],
-    defaultLocale: 'es-CO',
-  },
+  trailingSlash: true,
 };
+
+module.exports = withOffline(exportConfig);

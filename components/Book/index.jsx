@@ -34,6 +34,23 @@ const Book = () => {
     revisarFrecuenciaMensual();
   }, [ruleData]);
 
+  //revisa que se tenga conexiono se envia una notificación de error
+  const verificarConexion = () => {
+    if (process.browser) {
+      if (!navigator.onLine) {
+        toast({
+          title: 'Sin conexión a internet',
+          description: 'Este servicio solo se puede usar con una conexión a internet',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+        return false;
+      }
+    }
+    return true;
+  };
+
   // Manejan el estado del evento
   const handleChange = (key) => async (event) => {
     setError(null);
@@ -49,7 +66,6 @@ const Book = () => {
           localDate(eventData.diaInicio),
         )
       ) {
-        console.log('toast');
         toast({
           title: 'Error en las fechas',
           description: 'El día final no puede ser anterior al día de inicio',
@@ -73,7 +89,6 @@ const Book = () => {
       if (
         !fechasValidas(localDate(eventData.diaFin), localDate(ruleData.dia))
       ) {
-        console.log('toast');
         toast({
           title: 'Error en las fechas',
           description:
@@ -87,7 +102,6 @@ const Book = () => {
       if (
         !fechasValidas(localDate(ruleData.dia), localDate(eventData.diaInicio))
       ) {
-        console.log('toast');
         toast({
           title: 'Error en las fechas',
           description:
@@ -107,7 +121,6 @@ const Book = () => {
   const revisarHoras = () => {
     if (ruleData && ruleData.horaInicio && ruleData.horaFin) {
       if (!horasValidas(ruleData.horaInicio, ruleData.horaFin)) {
-        console.log('toast');
         toast({
           title: 'Error en las horas',
           description: 'La hora final no puede ser menor que la hora de inicio',
@@ -155,6 +168,7 @@ const Book = () => {
   };
 
   const step1terminado = () => {
+    if (!verificarConexion()) return;
     if (
       !fechasValidas(new Date(eventData.diaFin), new Date(eventData.diaInicio))
     ) {
@@ -171,11 +185,13 @@ const Book = () => {
     }
   };
 
+  const step2terminado = () => {
+    if (!verificarConexion()) return false;
+    return true;
+  };
+
   const step3terminado = () => {
-    console.log('step 3 entra');
-    console.log(revisarHoras());
-    console.log(revisarFechasRegla());
-    console.log(revisarFrecuenciaMensual());
+    if (!verificarConexion()) return;
     return revisarHoras() && revisarFechasRegla() && revisarFrecuenciaMensual();
   };
 
@@ -195,9 +211,6 @@ const Book = () => {
     correos.push(user.correo);
 
     // Evento
-    console.log(eventData);
-    console.log(ruleData);
-
     const evento = JSON.parse(JSON.stringify(eventData));
 
     evento.estado = 'aceptado';
@@ -223,16 +236,11 @@ const Book = () => {
     }
     rule.horaInicio = new Date(evento.diaInicio);
     rule.horaFin = new Date(evento.diaInicio);
-    console.log('1', rule);
-    console.log('2', ruleData);
     rule.horaInicio.setHours(ruleData.horaInicio.split(':')[0]);
     rule.horaInicio.setMinutes(ruleData.horaInicio.split(':')[1]);
-    console.log('3', rule);
-    console.log('4', ruleData);
 
     rule.horaFin.setHours(ruleData.horaFin.split(':')[0]);
     rule.horaFin.setMinutes(ruleData.horaFin.split(':')[1]);
-    console.log(rule);
 
     evento.reglas = [rule];
 
@@ -241,13 +249,12 @@ const Book = () => {
       evento: evento,
     };
 
-    console.log(body);
-
     return body;
   };
 
   // Crear el evento para todos los participantes
   const handleSubmit = async () => {
+    if (!verificarConexion()) return;
     const body = buildBody();
     const response = await fetcher('eventos/crearEventoCompleto', 'POST', body);
 
@@ -293,6 +300,7 @@ const Book = () => {
   };
 
   const handleAddInvited = () => async () => {
+    if (!verificarConexion()) return;
     if (!invitedData)
       return toast({
         title: 'Error',
@@ -335,6 +343,7 @@ const Book = () => {
   };
 
   const handleAvailability = async () => {
+    if (!verificarConexion()) return;
     const correos = invitedList.map((inv) => inv.correo);
     correos.push(user.correo);
     const body = {
@@ -342,7 +351,6 @@ const Book = () => {
       fechaInicio: localDate(eventData.diaInicio),
       fechaFin: localDate(eventData.diaFin),
     };
-    console.log('body', body);
     const response = await fetcher(`usuarios/disponibilidad`, 'POST', body);
     if (response.error) {
       return toast({
@@ -353,18 +361,17 @@ const Book = () => {
         isClosable: true,
       });
     } else {
-      //console.log('Disponibilidad: ', response);
       let newDisp = response.map((element) => {
         element.start = new Date(element.start);
         element.end = new Date(element.end);
         return element;
       });
-      //console.log('Con dates: ', newDisp);
       setDisp(newDisp);
     }
   };
 
   const verficarDisponibilidad = async () => {
+    if (!verificarConexion()) return;
     const body = buildBody();
     const response = await fetcher(
       `eventos/verificarDisponibilidad`,
@@ -390,9 +397,9 @@ const Book = () => {
   };
 
   return (
-    <Center minH="80vh" py={[14]} mt={14}>
-      <Box borderWidth="2px" p={7} borderRadius={14}>
-        <Heading mb={4} textAlign="center">
+    <Center minH='80vh' py={[14]} mt={14}>
+      <Box borderWidth='2px' p={7} borderRadius={14}>
+        <Heading mb={4} textAlign='center'>
           Agendar un evento
         </Heading>
         <Stepper step={step} setStep={setStep} />
@@ -409,6 +416,7 @@ const Book = () => {
             handleChangeInvited={handleChangeInvited}
             handleAddInvited={handleAddInvited}
             handleAvailability={handleAvailability}
+            step2terminado={step2terminado}
             invitedListState={[invitedList, setInvitedList]}
           />
         )}
