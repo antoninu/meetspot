@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Center,
   Box,
@@ -17,12 +17,26 @@ import fetcher from 'utils/fetcher';
 import useStateValue from 'hooks/useStateValue';
 import PasswordStrengthBar from 'react-password-strength-bar';
 
+const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 const Register = () => {
   const router = useRouter();
   const [userData, setUserData] = useState({});
   const [error, setError] = useState(null);
   const [, dispatch] = useStateValue();
   const toast = useToast();
+
+  useEffect(() => {
+    if (userData.correo && !userData.correo.match(emailRegex)) {
+      setError('El correo ingresado no es un correo.');
+    }
+  }, [userData.correo]);
+
+  useEffect(() => {
+    if (userData.contrasena !== userData.contrasena_rep) {
+      setError('Las contraseñas no coinciden');
+    }
+  }, [userData.contrasena, userData.contrasena_rep]);
 
   const handleChange = (key) => async (event) => {
     setError(null);
@@ -130,6 +144,15 @@ const Register = () => {
             type="submit"
             colorScheme="blue"
             onClick={handleSubmit}
+            disabled={
+              error ||
+              !userData ||
+              !userData.nombre ||
+              !userData.apellido ||
+              !userData.correo ||
+              !userData.contrasena ||
+              !userData.contrasena_rep
+            }
           >
             Registarme
           </Button>
