@@ -1,21 +1,14 @@
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import Calendar from 'components/Calendar/Calendar';
 import { useEffect, useState } from 'react';
-import useStateValue from 'hooks/useStateValue';
-import fetcher from 'utils/fetcher';
 import {
-  Box,
   Button,
   Heading,
-  FormControl,
   FormLabel,
   Input,
-  Select,
-  Text,
-  Flex,
-  Comment,
   Spacer,
+  FormControl,
+  FormHelperText,
 } from '@chakra-ui/react';
 
 const localizer = momentLocalizer(moment);
@@ -26,12 +19,14 @@ function Step3({
   handleChangeRule,
   step3terminado,
   verficarDisponibilidad,
+  availabilityCheck,
+  ruleData,
 }) {
   if (!disp) {
-    return <p>Loading</p>;
+    return <p>Cargando...</p>;
   } else {
     return (
-      <div>
+      <FormControl>
         <Heading as="h3" size="lg" mb={7} textAlign="center">
           Verifica sus disponibilidades
         </Heading>
@@ -39,7 +34,6 @@ function Step3({
           Con base en tu disponibilidad y en la de tus invitados, escoje el
           horario que mejor te convenga
         </p>
-
         <FormLabel mt={1}>Dia seleccionado</FormLabel>
         <Input
           type="date"
@@ -60,11 +54,18 @@ function Step3({
           placeholder="Hora fin..."
           onChange={handleChangeRule('horaFin')}
         />
+        {(!ruleData.dia || !ruleData.horaInicio || !ruleData.horaFin) && (
+          <FormHelperText color="red">
+            Debe seleccionar un dia y las horas antes de verificar la
+            disponibilidad
+          </FormHelperText>
+        )}
         <Button
           w="100%"
           mt={4}
           colorScheme="blue"
           mr={4}
+          disabled={!ruleData.dia || !ruleData.horaInicio || !ruleData.horaFin}
           onClick={() => {
             verficarDisponibilidad();
           }}
@@ -84,18 +85,24 @@ function Step3({
           endAccessor="end"
           style={{ height: 500 }}
         />
+        {!availabilityCheck && (
+          <FormHelperText color="red">
+            Debe verificar la disponibilidad antes de proceder
+          </FormHelperText>
+        )}
         <Button
           w="100%"
           mt={4}
           type="submit"
           colorScheme="blue"
+          disabled={!availabilityCheck}
           onClick={() => {
             if (step3terminado()) setStep(3);
           }}
         >
           Siguiente
         </Button>
-      </div>
+      </FormControl>
     );
   }
 }

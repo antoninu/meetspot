@@ -18,6 +18,7 @@ const Book = () => {
   const [invitedList, setInvitedList] = useState([]);
   const [, setError] = useState(null);
   const [disp, setDisp] = useState(null);
+  const [availabilityCheck, setAvailabilityCheck] = useState(false);
 
   const toast = useToast();
 
@@ -40,7 +41,8 @@ const Book = () => {
       if (!navigator.onLine) {
         toast({
           title: 'Sin conexión a internet',
-          description: 'Este servicio solo se puede usar con una conexión a internet',
+          description:
+            'Este servicio solo se puede usar con una conexión a internet',
           status: 'warning',
           duration: 3000,
           isClosable: true,
@@ -168,8 +170,25 @@ const Book = () => {
   };
 
   const step1terminado = () => {
-    if (!verificarConexion()) return;
-    if (
+    if (!verificarConexion()) {
+      toast({
+        title: 'Error',
+        description: 'La conexión no está disponible',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    }
+    if (!eventData.frecuencia) {
+      toast({
+        title: 'Por favor selecciona una frecuencia',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    } else if (
       !fechasValidas(new Date(eventData.diaFin), new Date(eventData.diaInicio))
     ) {
       toast({
@@ -207,6 +226,7 @@ const Book = () => {
   // Construir body de solicitud para verificar la disponbilidad o crear un evento
   const buildBody = () => {
     // Correos
+
     const correos = invitedList.map((inv) => inv.correo);
     correos.push(user.correo);
 
@@ -300,7 +320,24 @@ const Book = () => {
   };
 
   const handleAddInvited = () => async () => {
-    if (!verificarConexion()) return;
+    if (!verificarConexion()) {
+      toast({
+        title: 'Error',
+        description: 'La conexión no está disponible',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    if (invitedData === user.correo)
+      return toast({
+        title: 'Error',
+        description: 'No es necesario que te agregues a ti mismo',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     if (!invitedData)
       return toast({
         title: 'Error',
@@ -379,27 +416,34 @@ const Book = () => {
       body,
     );
     if (response.error) {
-      return toast({
+      console.log(response.error);
+      toast({
         title: 'Error',
-        description: response.error,
+        description:
+          typeof response.error === 'String'
+            ? response.error
+            : 'No hay disponibilidad',
         status: 'error',
         duration: 3000,
         isClosable: true,
       });
+      return false;
     }
-    return toast({
+    setAvailabilityCheck(true);
+    toast({
       title: 'Verificado',
       description: response.mensaje,
       status: 'success',
       duration: 3000,
       isClosable: true,
     });
+    return true;
   };
 
   return (
-    <Center minH='80vh' py={[14]} mt={14}>
-      <Box borderWidth='2px' p={7} borderRadius={14}>
-        <Heading mb={4} textAlign='center'>
+    <Center minH="80vh" py={[14]} mt={14}>
+      <Box borderWidth="2px" p={7} borderRadius={14}>
+        <Heading mb={4} textAlign="center">
           Agendar un evento
         </Heading>
         <Stepper step={step} setStep={setStep} />
@@ -408,6 +452,7 @@ const Book = () => {
             setStep={setStep}
             handleChange={handleChange}
             step1terminado={step1terminado}
+            eventData={eventData}
           />
         )}
         {step === 1 && (
@@ -427,6 +472,8 @@ const Book = () => {
             handleChangeRule={handleChangeRule}
             step3terminado={step3terminado}
             verficarDisponibilidad={verficarDisponibilidad}
+            availabilityCheck={availabilityCheck}
+            ruleData={ruleData}
           />
         )}
         {step === 3 && (
