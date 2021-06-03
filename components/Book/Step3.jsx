@@ -1,6 +1,5 @@
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
 import {
   Button,
   Heading,

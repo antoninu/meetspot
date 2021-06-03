@@ -34,7 +34,7 @@ function Step2({
         <Flex alignItems="center" justifyContent="space-around">
           <Input
             type="email"
-            placeholder="Correo invitado..."
+            placeholder="invitado@gmail.com..."
             width="85%"
             onChange={handleChangeInvited()}
           />
@@ -103,10 +103,11 @@ function Step2({
           type="submit"
           colorScheme="blue"
           onClick={() => {
-            if(step2terminado()){
-            handleAvailability();
-            setStep(2);
-          }}}
+            if (step2terminado()) {
+              handleAvailability();
+              setStep(2);
+            }
+          }}
         >
           Siguiente
         </Button>
