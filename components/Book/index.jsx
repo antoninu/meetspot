@@ -255,7 +255,7 @@ const Book = () => {
     // Evento
     const evento = JSON.parse(JSON.stringify(eventData));
 
-    evento.estado = 'aceptado';
+    //evento.estado = 'aceptado';
     evento.zonaHoraria = '+5';
     if (eventData.frecuencia === 'sinRepetir') {
       evento.diaInicio = localDate(ruleData.dia);

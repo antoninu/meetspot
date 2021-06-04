@@ -111,11 +111,11 @@ function User() {
   };
 
   useEffect(() => {
-    if (user != null) fetchUser();
+    if (user !== null) fetchUser();
   }, [user]);
 
   return (
-    fullUser != null && (
+    fullUser !== null && (
       <Box
         minH="100vh"
         p={[7, 7, 14]}
