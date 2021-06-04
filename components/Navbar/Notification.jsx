@@ -71,31 +71,13 @@ function Notification() {
           'name',
         );
       let nombre = evento.nombre;
-      mensaje = `${creador} ${mensaje_not()} ${nombre}`;
+      mensaje = `${creador} te ha invitado a su evento ${nombre}`;
       notifcaciones.push(mensaje);
     });
     console.log(notifcaciones);
     setNotifcations(notifcaciones);
   };
-  const noticiacionesMensajee = () => {
-    const lang = getBrowserLang();
-    if (lang.includes('en')) {
-      return 'Notificaciones';
-    } else {
-      return 'Notifications';
-    }
-  };
-  const mensaje_not = () => {
-    const lang = getBrowserLang();
-    if (lang.includes('en')) {
-      return ' te ha invitado a su evento ';
-    } else {
-      return ' has invited you to the event ';
-    }
-  };
-  function getBrowserLang() {
-    return navigator.language || navigator.userLanguage;
-  }
+
   const setupWS = () => {
     const wss = new WebSocket('ws://localhost:3001/');
     wss.onopen = () => {
@@ -136,7 +118,7 @@ function Notification() {
       <PopoverContent>
         <PopoverArrow />
         <PopoverCloseButton />
-        <PopoverHeader>{noticiacionesMensajee()}</PopoverHeader>
+        <PopoverHeader>Notificaciones</PopoverHeader>
         <PopoverBody>
           {notifications.map((value, index) => {
             if (index == notifications.length - 1)
