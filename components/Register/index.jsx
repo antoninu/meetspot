@@ -94,6 +94,7 @@ const Register = () => {
         borderWidth="2px"
         px={14}
         py={7}
+        mt={14}
         borderRadius={14}
         textAlign="center"
       >
