@@ -9,9 +9,22 @@ import {
   Text,
   IconButton,
   useToast,
+  Avatar,
 } from '@chakra-ui/react';
 import stringFormatter from 'utils/stringFormatter';
 import { SmallCloseIcon } from '@chakra-ui/icons';
+import { CUIAutoComplete } from 'chakra-ui-autocomplete';
+import { useState } from 'react';
+
+const countries = [
+  { value: 'ghana', label: 'Ghanaaas', id: '1' },
+  { value: 'nigeria', label: 'Nigeria', id: '2' },
+  { value: 'kenya', label: 'Kenya', id: '3' },
+  { value: 'southAfrica', label: 'South Africa', id: '4' },
+  { value: 'unitedStates', label: 'United States', id: '5' },
+  { value: 'canada', label: 'Canada', id: '6' },
+  { value: 'germany', label: 'Germany', id: '7' },
+];
 
 function Step2({
   handleChangeInvited,
@@ -20,8 +33,27 @@ function Step2({
   handleAvailability,
   step2terminado,
   invitedListState,
+  userEmails,
 }) {
   const [invitedList, setInvitedList] = invitedListState;
+
+  const [pickerItems, setPickerItems] = useState(userEmails);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleSelectedItemsChange = (selectedItems) => {
+    console.log('entra');
+    if (selectedItems) {
+      console.log('selected', selectedItems);
+      selectedItems.forEach((element) => {
+        console.log('e', element.value);
+
+        handleAddInvited(element.value);
+        console.log('handled');
+      });
+      setSelectedItems(selectedItems);
+    }
+  };
+
   const toast = useToast();
 
   return (
@@ -30,9 +62,22 @@ function Step2({
         Invita a tus compañeros
       </Heading>
       <FormControl>
-        <FormLabel mt={1}>Correos de los usuarios invitados</FormLabel>
+        {/**<FormLabel mt={1}>Correos de los usuarios invitados</FormLabel> */}
         <Flex alignItems="center" justifyContent="space-around">
-          <Input
+          <Box>
+            <CUIAutoComplete
+              highlightItemBg="#90CDF4"
+              label="Usuarios Invitados"
+              placeholder="invitado@gmail.com..."
+              items={pickerItems}
+              selectedItems={selectedItems}
+              onSelectedItemsChange={(changes) =>
+                handleSelectedItemsChange(changes.selectedItems)
+              }
+              disableCreateItem={true}
+            />
+          </Box>
+          {/*<Input
             type="email"
             placeholder="invitado@gmail.com..."
             width="85%"
@@ -46,9 +91,9 @@ function Step2({
             onClick={handleAddInvited()}
           >
             +
-          </Button>
+          </Button>*/}
         </Flex>
-
+        {/*
         <Box
           id="invited-list"
           borderWidth="2px"
@@ -96,7 +141,7 @@ function Step2({
             <Text>Ninguno</Text>
           )}
         </Box>
-
+          */}
         <Button
           width="100%"
           mt={4}

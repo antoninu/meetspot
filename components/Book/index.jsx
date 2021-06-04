@@ -19,11 +19,16 @@ const Book = () => {
   const [, setError] = useState(null);
   const [disp, setDisp] = useState(null);
   const [availabilityCheck, setAvailabilityCheck] = useState(false);
+  const [userList, setUserList] = useState([]);
 
   const toast = useToast();
 
   const [{ user }] = useStateValue();
   const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     revisarFechas();
@@ -35,6 +40,23 @@ const Book = () => {
     revisarFrecuenciaMensual();
   }, [ruleData]);
 
+  const fetchUsers = async () => {
+    const response = await fetcher('usuarios', 'GET');
+    console.log(response);
+    if (response.error) {
+      return toast({
+        title: 'Error',
+        description: response.error,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    const userEmails = response.map((element) => {
+      return { value: element.correo, label: element.correo };
+    });
+    setUserList(userEmails);
+  };
   //revisa que se tenga conexiono se envia una notificación de error
   const verificarConexion = () => {
     if (process.browser) {
@@ -267,6 +289,7 @@ const Book = () => {
     const body = {
       correos,
       evento: evento,
+      //creador: _id
     };
 
     return body;
@@ -319,7 +342,8 @@ const Book = () => {
     setInvitedData(event.target.value);
   };
 
-  const handleAddInvited = () => async () => {
+  const handleAddInvited = (email) => async () => {
+    console.log('entraaa', email);
     if (!verificarConexion()) {
       toast({
         title: 'Error',
@@ -330,7 +354,7 @@ const Book = () => {
       });
       return;
     }
-    if (invitedData === user.correo)
+    if (email === user.correo)
       return toast({
         title: 'Error',
         description: 'No es necesario que te agregues a ti mismo',
@@ -338,31 +362,7 @@ const Book = () => {
         duration: 3000,
         isClosable: true,
       });
-    if (!invitedData)
-      return toast({
-        title: 'Error',
-        description: `Busca usuarios por su correo`,
-        status: 'warning',
-        duration: 3000,
-        isClosable: true,
-      });
-    if (invitedList.filter((e) => e.correo === invitedData).length > 0)
-      return toast({
-        title: 'Error',
-        description: `El usuario ${invitedData} ya fue incluido en la lista`,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-    if (invitedData === user.correo)
-      return toast({
-        title: 'Error',
-        description: 'No es necesario que te agregues a ti mismo',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-    const response = await fetcher(`usuarios/correo/${invitedData}`, 'GET');
+    const response = await fetcher(`usuarios/correo/${email}`, 'GET');
 
     if (response.error) {
       setError(response.error);
@@ -442,7 +442,7 @@ const Book = () => {
 
   return (
     <Center minH="80vh" py={[14]} mt={14}>
-      <Box borderWidth="2px" p={7} borderRadius={14}>
+      <Box borderWidth="2px" p={7} borderRadius={14} w={[300, 400, 600]}>
         <Heading mb={4} textAlign="center">
           Agendar un evento
         </Heading>
@@ -462,6 +462,7 @@ const Book = () => {
             handleAddInvited={handleAddInvited}
             handleAvailability={handleAvailability}
             step2terminado={step2terminado}
+            userEmails={userList}
             invitedListState={[invitedList, setInvitedList]}
           />
         )}

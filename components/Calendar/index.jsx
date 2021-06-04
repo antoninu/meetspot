@@ -67,7 +67,7 @@ const Calendar = () => {
       {eventos.length == 0 ? (
         <BlankSlate></BlankSlate>
       ) : (
-        <Bl>
+        <>
           <Heading mb={4}>Mi Calendario</Heading>
           <NextLink href="/book">
             <Button my={4} colorScheme="blue">
@@ -75,7 +75,7 @@ const Calendar = () => {
             </Button>
           </NextLink>
           <BigCalendar eventos={eventos} />
-        </Bl>
+        </>
       )}
     </Box>
   );

@@ -83,7 +83,9 @@ function User(props) {
             {fullUser.correo}
           </GridItem>
           <GridItem colSpan={1}>
-            <Button colorScheme="blue">Ver calendario</Button>
+            <NextLink href="/calendar">
+              <Button colorScheme="blue">Ver calendario</Button>
+            </NextLink>
           </GridItem>
         </Grid>
         <Box>

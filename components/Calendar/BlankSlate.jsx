@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Image, Text, Center } from '@chakra-ui/react';
 import { Grid, GridItem } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 const BlankSlate = ({ eventos }) => {
   return (
@@ -53,9 +54,11 @@ const BlankSlate = ({ eventos }) => {
         </GridItem>
       </Grid>
       <Flex alignItems="center" justifyContent="space-around">
-        <Button my={4} colorScheme="blue">
-          Agendar un evento
-        </Button>
+        <NextLink href="/book">
+          <Button my={4} colorScheme="blue">
+            Agendar un evento
+          </Button>
+        </NextLink>
       </Flex>
       <Center pt={4}>
         <Text fontSize="1xl">
