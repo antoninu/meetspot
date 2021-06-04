@@ -6,7 +6,6 @@ import fetcher from 'utils/fetcher';
 function Statistics(props) {
   const [{ user }] = useStateValue();
   const [eventosSinFecha, setEventosSinFecha] = useState([]);
-  const [eventos, setEventos] = useState([]);
 
   const getEvents = async () => {
     if (navigator.onLine) {
@@ -28,7 +27,6 @@ function Statistics(props) {
         });
         localStorage.setItem('events', JSON.stringify(events));
         setEventosSinFecha(events);
-        setEventos(events);
       }
     } else {
       if (localStorage.getItem('events') === null) {
@@ -47,7 +45,6 @@ function Statistics(props) {
           },
         );
         setEventosSinFecha(storedEvents);
-        setEventos(storedEvents);
       }
     }
   };
@@ -83,10 +80,11 @@ function Statistics(props) {
       startD.setHours(0, 0, 0, 0);
       finD.setHours(0, 0, 0, 0);
 
-      console.log("HAHA")
-
       if (startD.getTime() == hoy.getTime()) {
-        var diff = (eventos[i].end.getTime() - eventos[i].start.getTime()) / 1000;
+        var diff =
+          (eventosSinFecha[i].end.getTime() -
+            eventosSinFecha[i].start.getTime()) /
+          1000;
         diff /= 60;
         minutosOcupados += Math.abs(Math.round(diff));
         minutosDisponibles -= minutosOcupados;
@@ -95,7 +93,7 @@ function Statistics(props) {
 
     const data = [minutosOcupados, minutosDisponibles]; //eventos.filter(evento => evento.);
 
-    console.log(data)
+    console.log(data);
 
     const radius = Math.min(width, height) / 2;
 
@@ -121,20 +119,20 @@ function Statistics(props) {
   };
 
   useEffect(() => {
-    if (user !== null) {
-      getEvents() 
+    if (user !== null && eventosSinFecha.length == 0) {
+      getEvents();
     }
     //graph()
-    if(eventos.length > 0)
-    {
-      console.log(eventos)
-      graph()
+    if (eventosSinFecha.length > 0) {
+      console.log(eventosSinFecha);
+      graph();
     }
-  }, []);
+  }, [eventosSinFecha]);
 
   return (
     <Center>
       <h2>Tiempo disponible hoy</h2>
+      <br/>
       <div id="canvas"></div>
     </Center>
   );
