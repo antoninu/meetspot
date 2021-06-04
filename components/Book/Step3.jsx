@@ -9,6 +9,7 @@ import {
   FormControl,
   FormHelperText,
 } from '@chakra-ui/react';
+import { FormattedMessage } from 'react-intl';
 
 const localizer = momentLocalizer(moment);
 
@@ -27,27 +28,26 @@ function Step3({
     return (
       <FormControl>
         <Heading as="h3" size="lg" mb={7} textAlign="center">
-          Verifica sus disponibilidades
+          <FormattedMessage id="create_check_title" />
         </Heading>
         <p>
-          Con base en tu disponibilidad y en la de tus invitados, escoje el
-          horario que mejor te convenga
+          <FormattedMessage id="create_check_invitation" />
         </p>
-        <FormLabel mt={1}>Dia seleccionado</FormLabel>
+        <FormLabel mt={1}><FormattedMessage id="create_selected_day" /></FormLabel>
         <Input
           type="date"
           placeholder="Dia seleccionado"
           onChange={handleChangeRule('dia')}
         />
 
-        <FormLabel mt={1}>Hora inicio</FormLabel>
+        <FormLabel mt={1}><FormattedMessage id="create_start_hour" /></FormLabel>
         <Input
           type="time"
           placeholder="Hora inicio..."
           onChange={handleChangeRule('horaInicio')}
         />
 
-        <FormLabel mt={1}>Hora finalizacion </FormLabel>
+        <FormLabel mt={1}><FormattedMessage id="create_end_hour" /></FormLabel>
         <Input
           type="time"
           placeholder="Hora fin..."
@@ -69,11 +69,11 @@ function Step3({
             verficarDisponibilidad();
           }}
         >
-          Verificar Disponibilidad
+          <FormattedMessage id="create_check_availability" />
         </Button>
         <Spacer></Spacer>
         <Heading as="h4" size="md" p={2}>
-          Horarios en los que todos están disponibles:
+          <FormattedMessage id="create_check_schedules_title" />:
         </Heading>
 
         <BigCalendar
@@ -99,7 +99,7 @@ function Step3({
             if (step3terminado()) setStep(3);
           }}
         >
-          Siguiente
+          <FormattedMessage id="create_next" />
         </Button>
       </FormControl>
     );

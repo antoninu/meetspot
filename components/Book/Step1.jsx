@@ -8,6 +8,7 @@ import {
   Select,
   FormHelperText,
 } from '@chakra-ui/react';
+import { FormattedMessage } from 'react-intl';
 
 function Step1({ setStep, handleChange, step1terminado, eventData }) {
   const [error, setError] = useState(null);
@@ -31,37 +32,37 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
   return (
     <FormControl id="signup">
       <Heading as="h3" size="lg" mb={7} textAlign="center">
-        Crea tu evento
+        <FormattedMessage id="create_event_create" />
       </Heading>
-      <FormLabel>Nombre</FormLabel>
+      <FormLabel><FormattedMessage id="create_name" /></FormLabel>
       <Input
         type="name"
         placeholder="Nombre..."
         onChange={handleChange('nombre')}
       />
 
-      <FormLabel mt={1}>Descripción</FormLabel>
+      <FormLabel mt={1}><FormattedMessage id="create_description" /></FormLabel>
       <Input
         type="name"
         placeholder="Descripción..."
         onChange={handleChange('descripcion')}
       />
 
-      <FormLabel mt={1}>Día inicio</FormLabel>
+      <FormLabel mt={1}><FormattedMessage id="create_start_day" /></FormLabel>
       <Input
         type="date"
         placeholder="Día inicio..."
         onChange={handleChange('diaInicio')}
       />
 
-      <FormLabel mt={1}>Día fin</FormLabel>
+      <FormLabel mt={1}><FormattedMessage id="create_end_day" /></FormLabel>
       <Input
         type="date"
         placeholder="Día fin..."
         onChange={handleChange('diaFin')}
       />
 
-      <FormLabel mt={1}>Frecuencia</FormLabel>
+      <FormLabel mt={1}><FormattedMessage id="create_frequency" /></FormLabel>
       <Select
         placeholder="Seleccione una opción"
         onChange={handleChange('frecuencia')}
@@ -87,7 +88,7 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
           if (step1terminado()) setStep(1);
         }}
       >
-        Siguiente
+        <FormattedMessage id="create_next" />
       </Button>
     </FormControl>
   );

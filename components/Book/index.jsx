@@ -9,6 +9,8 @@ import Step2 from './Step2';
 import Step3 from './Step3';
 import Step4 from './Step4';
 import Stepper from './Stepper';
+import { FormattedMessage } from 'react-intl';
+
 
 const Book = () => {
   const router = useRouter();
@@ -448,7 +450,7 @@ const Book = () => {
     <Center minH="80vh" py={[14]} mt={14}>
       <Box borderWidth="2px" p={7} borderRadius={14} w={[300, 400, 600]}>
         <Heading mb={4} textAlign="center">
-          Agendar un evento
+          <FormattedMessage id="create_event_title" />
         </Heading>
         <Stepper step={step} setStep={setStep} />
         {step === 0 && (

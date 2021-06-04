@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import fetcher from 'utils/fetcher';
 import useStateValue from 'hooks/useStateValue';
 import PasswordStrengthBar from 'react-password-strength-bar';
+import { FormattedMessage } from 'react-intl';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -97,27 +98,27 @@ const Register = () => {
         borderRadius={14}
         textAlign="center"
       >
-        <Heading mb={4}>Registro</Heading>
+        <Heading mb={4}><FormattedMessage id="register_title" /></Heading>
         <FormControl id="signup">
-          <FormLabel>Nombre</FormLabel>
+          <FormLabel><FormattedMessage id="create_name" /></FormLabel>
           <Input
             type="name"
             placeholder="Nombre..."
             onChange={handleChange('nombre')}
           />
-          <FormLabel mt={1}>Apellido</FormLabel>
+          <FormLabel mt={1}><FormattedMessage id="create_lastname" /></FormLabel>
           <Input
             type="name"
             placeholder="Apellido..."
             onChange={handleChange('apellido')}
           />
-          <FormLabel mt={1}>Correo Electrónico</FormLabel>
+          <FormLabel mt={1}><FormattedMessage id="create_email" /></FormLabel>
           <Input
             type="email"
             placeholder="Correo..."
             onChange={handleChange('correo')}
           />
-          <FormLabel mt={1}>Contraseña</FormLabel>
+          <FormLabel mt={1}><FormattedMessage id="password" /></FormLabel>
           <Input
             type="password"
             placeholder="***********"
@@ -130,7 +131,7 @@ const Register = () => {
             }
             scoreWords={['Muy débil', 'Débil', 'Aceptable', 'Bien', 'Fuerte']}
           />
-          <FormLabel mt={1}>Repite la contraseña</FormLabel>
+          <FormLabel mt={1}><FormattedMessage id="create_repeat_password" /></FormLabel>
           <Input
             type="password"
             placeholder="***********"

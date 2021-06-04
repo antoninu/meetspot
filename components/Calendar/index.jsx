@@ -5,6 +5,7 @@ import useStateValue from 'hooks/useStateValue';
 import { useEffect, useState } from 'react';
 import fetcher from 'utils/fetcher';
 import BlankSlate from './BlankSlate';
+import { FormattedMessage } from 'react-intl';
 
 const Calendar = () => {
   const [{ user }] = useStateValue();
@@ -68,10 +69,10 @@ const Calendar = () => {
         <BlankSlate></BlankSlate>
       ) : (
         <>
-          <Heading mb={4}>Mi Calendario</Heading>
+          <Heading mb={4}><FormattedMessage id="my_calendar" /></Heading>
           <NextLink href="/book">
             <Button my={4} colorScheme="blue">
-              Agendar un evento
+              <FormattedMessage id="schedule_event" />
             </Button>
           </NextLink>
           <BigCalendar eventos={eventos} />

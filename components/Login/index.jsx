@@ -68,14 +68,14 @@ const Login = () => {
       >
         <Heading mb={4}><FormattedMessage id="login" /></Heading>
         <FormControl id="login">
-          <FormLabel mt={1}>Email</FormLabel>
+          <FormLabel mt={1}>E-mail</FormLabel>
           <Input
             id="email"
             type="email"
-            placeholder="tu@gmail.com..."
+            placeholder="mail@gmail.com"
             onChange={handleChange('correo')}
           />
-          <FormLabel mt={1}>Contraseña</FormLabel>
+          <FormLabel mt={1}><FormattedMessage id="password" /></FormLabel>
           <Input
             id="password"
             type="password"
@@ -92,14 +92,14 @@ const Login = () => {
             colorScheme="blue"
             onClick={() => onSubmit()}
           >
-            Ingresar
+            <FormattedMessage id="enter" />
           </Button>
 
           <Center>
             <FormHelperText>
-              Si no tienes una cuenta, puedes registrarte{' '}
+              <FormattedMessage id="if_you_dont" />{' '}
               <NextLink href="/register" passHref>
-                <Link textDecoration="underline">aquí</Link>
+                <Link textDecoration="underline"><FormattedMessage id="here" /></Link>
               </NextLink>
             </FormHelperText>
           </Center>
