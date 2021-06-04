@@ -265,6 +265,7 @@ const Book = () => {
       evento.diaInicio = getFirstDayMonth(localDate(ruleData.dia));
     }
     evento.diaFin = localDate(eventData.diaFin);
+    evento.fechaCreacion = new Date();
 
     // Regla
     const rule = JSON.parse(JSON.stringify(ruleData));
