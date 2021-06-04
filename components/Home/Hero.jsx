@@ -37,8 +37,6 @@ const Hero = () => {
         <Text><FormattedMessage id="FAQ_answer3" /></Text>
         <Heading as="h5" size="md"><FormattedMessage id="FAQ_question3" /></Heading>
         <Text><FormattedMessage id="FAQ_answer2" /></Text>
-
-
       </div>
     </>
   );

@@ -6,11 +6,11 @@ import {
   Avatar,
   Grid,
   GridItem,
-  MenuList,
-  MenuItem,
+  Center,
   Link,
   Text,
   Stack,
+  useToast,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import useStateValue from 'hooks/useStateValue';
@@ -19,11 +19,13 @@ import stringFormatter from 'utils/stringFormatter';
 import Statistics from './Statistics';
 import Invitations from './Invitations';
 
-function User(props) {
+function User() {
   const [{ user }] = useStateValue();
   const [fullUser, setFullUser] = useState(null);
   const [subView, setSubView] = useState('inv');
   const [pendingEvents, setPendingEvents] = useState([]);
+
+  const toast = useToast();
 
   const fetchUser = async () => {
     let fullUserNew;
@@ -31,7 +33,7 @@ function User(props) {
       fullUserNew = await fetcher(`usuarios/${user._id}`, 'GET');
       localStorage.setItem('fullUser', JSON.stringify(fullUserNew));
       setFullUser(fullUserNew);
-    }else {
+    } else {
       if (localStorage.getItem('fullUser') === null) {
         setFullUser(null);
       } else {
@@ -39,7 +41,58 @@ function User(props) {
         setFullUser(fullUserNew);
       }
     }
+    console.log(fullUserNew);
     getPendingEvents(fullUserNew);
+  };
+
+  const aceptarEvento = async (id) => {
+    if (!navigator.onLine) {
+      toast({
+        title: 'Sin conexión a internet',
+        description:
+          'Este servicio solo se puede usar con una conexión a internet',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    }
+    const response = await fetcher(`eventos/${id}/aceptarEvento`, 'PATCH');
+    if (response.error) {
+      return toast({
+        title: 'Error',
+        description: response.error,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    setPendingEvents(pendingEvents.filter((element) => element._id != id));
+  };
+
+  const rechazarEvento = async (id) => {
+    if (!navigator.onLine) {
+      toast({
+        title: 'Sin conexión a internet',
+        description:
+          'Este servicio solo se puede usar con una conexión a internet',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    }
+    const response = await fetcher(`eventos/${id}/aceptarEvento`, 'PATCH');
+    if (response.error) {
+      return toast({
+        title: 'Error',
+        description: response.error,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    setPendingEvents(pendingEvents.filter((element) => element._id != id));
   };
 
   const handleInv = () => {
@@ -50,8 +103,8 @@ function User(props) {
     setSubView('stat');
   };
 
-  const getPendingEvents = (user) => {
-    const pendingEventsNew = user.eventos.filter(
+  const getPendingEvents = (usuario) => {
+    const pendingEventsNew = usuario.eventos.filter(
       (element) => element.estado === 'pendiente',
     );
     setPendingEvents(pendingEventsNew);
@@ -70,33 +123,29 @@ function User(props) {
         textAlign={['center', 'center', 'inherit']}
         alignItems="center"
       >
-        <Grid
-          h="150px"
-          templateRows="repeat(2, 1fr)"
-          templateColumns="repeat(2, 1fr)"
-          gap={4}
-          mb={10}
-        >
-          <GridItem rowSpan={2} colSpan={1} align="end">
+        <Center flexDirection={['column', 'row']}>
+          <Box p={4}>
             <Box verticalAlign="sub">
               <Avatar size="2xl"></Avatar>
             </Box>
-          </GridItem>
-          <GridItem rowSpan={1} colSpan={1}>
-            <Heading>
-              {stringFormatter(
-                fullUser.nombre + ' ' + fullUser.apellido,
-                'name',
-              )}
-            </Heading>
-            {fullUser.correo}
-          </GridItem>
-          <GridItem colSpan={1}>
-            <NextLink href="/calendar">
-              <Button colorScheme="blue">Ver calendario</Button>
-            </NextLink>
-          </GridItem>
-        </Grid>
+          </Box>
+          <Box>
+            <Box>
+              <Heading>
+                {stringFormatter(
+                  fullUser.nombre + ' ' + fullUser.apellido,
+                  'name',
+                )}
+              </Heading>
+              {fullUser.correo}
+            </Box>
+            <Box my={2}>
+              <NextLink href="/calendar">
+                <Button colorScheme="blue">Ver calendario</Button>
+              </NextLink>
+            </Box>
+          </Box>
+        </Center>
         <Box>
           <Stack
             spacing={8}
@@ -121,7 +170,13 @@ function User(props) {
           <hr></hr>
         </Box>
         {subView === 'inv' ? (
-          <Invitations eventos={pendingEvents}>Invitaciones</Invitations>
+          <Invitations
+            eventos={pendingEvents}
+            aceptarEvento={aceptarEvento}
+            rechazarEvento={rechazarEvento}
+          >
+            Invitaciones
+          </Invitations>
         ) : (
           <Statistics></Statistics>
         )}

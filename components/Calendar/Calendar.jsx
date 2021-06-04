@@ -9,6 +9,14 @@ const Calendar = ({ eventos }) => {
     <Box>
       <BigCalendar
         localizer={localizer}
+        events={eventos}
+        defaultView="week"
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: 500 }}
+      />
+      {/*<BigCalendar
+        localizer={localizer}
         onSelectEvent={(event) => {}}
         events={eventos}
         startAccessor="start"
@@ -24,7 +32,7 @@ const Calendar = ({ eventos }) => {
             style: newStyle,
           };
         }}
-      />
+      />*/}
     </Box>
   );
 };

@@ -289,7 +289,7 @@ const Book = () => {
     const body = {
       correos,
       evento: evento,
-      //creador: _id
+      creador: user.correo,
     };
 
     return body;
