@@ -18,9 +18,7 @@ export default function Footer() {
     <footer>
       <hr />
       <Section p={5} textAlign="center">
-        <Heading mt={14} mb={7}>
-          FAQ
-        </Heading>
+        <Heading my={7}>FAQ</Heading>
         <Heading as="h5" size="md" mb={4}>
           <FormattedMessage id="FAQ_question1" />
         </Heading>
