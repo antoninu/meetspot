@@ -26,7 +26,22 @@ function Event({ evento, aceptarEvento, rechazarEvento }) {
         {stringFormatter(evento.nombre, 'name')}
       </Heading>
       <Text mt="0">{stringFormatter(evento.descripcion, 'text')}</Text>
-      <Text>{evento.diaInicio + '-' + evento.diaFin}</Text>
+      <Text>
+        <FormattedDate
+          value={new Date(evento.diaInicio)}
+          year="numeric"
+          month="long"
+          day="numeric"
+          weekday="long"
+        />
+        <FormattedDate
+          value={new Date(evento.diaFin)}
+          year="numeric"
+          month="long"
+          day="numeric"
+          weekday="long"
+        />
+      </Text>
       <Spacer />
       <Flex>
         <ButtonGroup variant="outline" spacing="2">
