@@ -34,7 +34,9 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
       <Heading as="h3" size="lg" mb={7} textAlign="center">
         <FormattedMessage id="create_event_create" />
       </Heading>
-      <FormLabel id="name-label"><FormattedMessage id="create_name" /></FormLabel>
+      <FormLabel id="name-label">
+        <FormattedMessage id="create_name" />
+      </FormLabel>
       <Input
         type="name"
         placeholder="Nombre..."
@@ -68,8 +70,6 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
         onChange={handleChange('diaFin')}
         id="final-day"
       />
-
-      <FormLabel mt={1}><FormattedMessage id="create_frequency" /></FormLabel>
       <FormLabel mt={1} id="frecuency-label">
         <FormattedMessage id="create_frequency" />
       </FormLabel>
