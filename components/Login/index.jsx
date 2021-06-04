@@ -31,11 +31,12 @@ const Login = () => {
   };
 
   const onSubmit = async () => {
-    if(process.browser){
-      if(!navigator.onLine){
+    if (process.browser) {
+      if (!navigator.onLine) {
         toast({
           title: 'Sin conexión a internet',
-          description: 'Este servicio solo se puede usar con una conexión a internet',
+          description:
+            'Este servicio solo se puede usar con una conexión a internet',
           status: 'warning',
           duration: 3000,
           isClosable: true,
@@ -49,9 +50,14 @@ const Login = () => {
       setError(response.error);
     } else {
       // set user
-      const user = {'apellido':response.apellido, 'nombre': response.nombre, 'correo':response.correo, '_id':response._id};
+      const user = {
+        apellido: response.apellido,
+        nombre: response.nombre,
+        correo: response.correo,
+        _id: response._id,
+      };
       dispatch({ type: 'LOG_IN', newUser: user });
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
       await router.push('/calendar');
     }
   };
@@ -65,21 +71,29 @@ const Login = () => {
         borderRadius={14}
         textAlign="center"
       >
-        <Heading mb={4}>Iniciar sesión</Heading>
+        <Heading mb={4} as="h1">
+          Iniciar sesión
+        </Heading>
         <FormControl id="login">
-          <FormLabel mt={1}>Email</FormLabel>
+          <FormLabel mt={1} id="email-label">
+            Email
+          </FormLabel>
           <Input
             id="email"
             type="email"
             placeholder="tu@gmail.com..."
             onChange={handleChange('correo')}
+            id="email"
           />
-          <FormLabel mt={1}>Contraseña</FormLabel>
+          <FormLabel mt={1} id="password-label">
+            Contraseña
+          </FormLabel>
           <Input
             id="password"
             type="password"
             placeholder="***********"
             onChange={handleChange('contrasena')}
+            id="password"
           />
 
           {error && <FormHelperText color="red">{error}</FormHelperText>}

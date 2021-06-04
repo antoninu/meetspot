@@ -9,23 +9,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem as ChakraMenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  MenuDivider,
-  IconButton,
-  Icon,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverHeader,
-  PopoverBody,
 } from '@chakra-ui/react';
-import { FaBell } from 'react-icons/fa';
 import MenuItem from 'components/Navbar/MenuItem';
 import NextLink from 'next/link';
 import useStateValue from 'hooks/useStateValue';
@@ -120,11 +104,15 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
       >
         {privateRoute ? (
           <>
-            <MenuItem to="/calendar">Calendario</MenuItem>
-            <MenuItem to="/book">Agendar</MenuItem>
+            <MenuItem to="/calendar" aria-label="calendar-link">
+              Calendario
+            </MenuItem>
+            <MenuItem to="/book" aria-label="book-link">
+              Agendar
+            </MenuItem>
 
             {user && (
-              <MenuItem to="/user">
+              <MenuItem to="/user" aria-label="user-link">
                 <Text as="b">
                   {stringFormatter(user.nombre + ' ' + user.apellido, 'name')}
                 </Text>
@@ -134,14 +122,16 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
             <Notification notifications={notifcations}></Notification>
 
             <Menu>
-              <MenuButton>
-                <Avatar />
+              <MenuButton aria-label="user-menu-button">
+                <Avatar iconLabel="avatar" />
               </MenuButton>
               <MenuList>
-                <ChakraMenuItem onClick={userProfile}>
+                <ChakraMenuItem onClick={userProfile} aria-label="profile-link">
                   Ver perfil
                 </ChakraMenuItem>
-                <ChakraMenuItem onClick={logOut}>Cerrar sesión</ChakraMenuItem>
+                <ChakraMenuItem onClick={logOut} aria-label="logout-link">
+                  Cerrar sesión
+                </ChakraMenuItem>
               </MenuList>
             </Menu>
           </>

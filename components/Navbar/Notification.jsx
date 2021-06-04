@@ -14,7 +14,7 @@ import {
   Avatar,
   AvatarBadge,
 } from '@chakra-ui/react';
-import { FaBell, FaRegCalendarPlus } from 'react-icons/fa';
+import { BellIcon } from '@chakra-ui/icons';
 import useStateValue from 'hooks/useStateValue';
 import fetcher from 'utils/fetcher';
 import stringFormatter from 'utils/stringFormatter';
@@ -98,7 +98,11 @@ function Notification() {
   return (
     <Popover>
       <PopoverTrigger>
-        <Avatar size="sm" icon={<FaBell />} style={{ cursor: 'pointer' }}>
+        <Avatar
+          size="sm"
+          icon={<BellIcon aria-label="notification-icon" />}
+          style={{ cursor: 'pointer' }}
+        >
           {notifications.length > 0 && (
             <AvatarBadge boxSize="1.25em" bg="tomato">
               <span style={{ color: 'white', fontSize: 'xx-small' }}>

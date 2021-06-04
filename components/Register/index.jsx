@@ -98,31 +98,43 @@ const Register = () => {
         borderRadius={14}
         textAlign="center"
       >
-        <Heading mb={4}>Registro</Heading>
+        <Heading mb={4} as="h1">
+          Registro
+        </Heading>
         <FormControl id="signup">
-          <FormLabel>Nombre</FormLabel>
+          <FormLabel id="name-label">Nombre</FormLabel>
           <Input
             type="name"
             placeholder="Nombre..."
             onChange={handleChange('nombre')}
+            id="name"
           />
-          <FormLabel mt={1}>Apellido</FormLabel>
+          <FormLabel mt={1} id="surname-label">
+            Apellido
+          </FormLabel>
           <Input
             type="name"
             placeholder="Apellido..."
             onChange={handleChange('apellido')}
+            id="surname"
           />
-          <FormLabel mt={1}>Correo Electrónico</FormLabel>
+          <FormLabel mt={1} id="email-label">
+            Correo Electrónico
+          </FormLabel>
           <Input
             type="email"
             placeholder="Correo..."
             onChange={handleChange('correo')}
+            id="email"
           />
-          <FormLabel mt={1}>Contraseña</FormLabel>
+          <FormLabel mt={1} id="password-label">
+            Contraseña
+          </FormLabel>
           <Input
             type="password"
             placeholder="***********"
             onChange={handleChange('contrasena')}
+            id="password"
           />
           <PasswordStrengthBar
             password={userData.contrasena}
@@ -131,11 +143,14 @@ const Register = () => {
             }
             scoreWords={['Muy débil', 'Débil', 'Aceptable', 'Bien', 'Fuerte']}
           />
-          <FormLabel mt={1}>Repite la contraseña</FormLabel>
+          <FormLabel mt={1} id="repeat-password-label">
+            Repite la contraseña
+          </FormLabel>
           <Input
             type="password"
             placeholder="***********"
             onChange={handleChange('contrasena_rep')}
+            id="repeat-password"
           />
           {error && <FormHelperText color="red">{error}</FormHelperText>}
 

@@ -30,17 +30,17 @@ const Hero = () => {
         minH="80vh"
       >
         <Heading mb={4}>FAQ</Heading>
-        <Heading as="h5" size="md">
+        <Heading as="h4" size="md">
           Do I have to pay for the service?
         </Heading>
         <Text mb={2}>Not necessary for now.</Text>
-        <Heading as="h5" size="md">
+        <Heading as="h4" size="md">
           Do my partners need to have an account to access this service?
         </Heading>
         <Text mb={2}>
           Yes they do in order for us to let you know their availabilities.
         </Text>
-        <Heading as="h5" size="md">
+        <Heading as="h4" size="md">
           Can I load my schedule with my current Google Calendar?
         </Heading>
         <Text mb={10}>

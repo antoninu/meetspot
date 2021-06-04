@@ -97,7 +97,7 @@ const BlankSlate = ({ eventos }) => {
         </NextLink>
       </Flex>
       <Center pt={4}>
-        <Text fontSize="1xl">
+        <Text fontSize="1xl" as="h1">
           <strong> ¡Meetspot es gratis!</strong>
         </Text>
       </Center>

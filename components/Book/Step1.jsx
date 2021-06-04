@@ -33,38 +33,52 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
       <Heading as="h3" size="lg" mb={7} textAlign="center">
         Crea tu evento
       </Heading>
-      <FormLabel>Nombre</FormLabel>
+      <FormLabel id="name-label">Nombre</FormLabel>
       <Input
         type="name"
         placeholder="Nombre..."
         onChange={handleChange('nombre')}
+        id="name"
       />
 
-      <FormLabel mt={1}>Descripción</FormLabel>
+      <FormLabel mt={1} id="description-label">
+        Descripción
+      </FormLabel>
       <Input
         type="name"
         placeholder="Descripción..."
         onChange={handleChange('descripcion')}
+        id="description"
       />
 
-      <FormLabel mt={1}>Día inicio</FormLabel>
+      <FormLabel mt={1} id="initial-day-label">
+        Día inicio
+      </FormLabel>
       <Input
         type="date"
         placeholder="Día inicio..."
         onChange={handleChange('diaInicio')}
+        id="initial-day"
       />
 
-      <FormLabel mt={1}>Día fin</FormLabel>
+      <FormLabel mt={1} id="final-day-label">
+        Día fin
+      </FormLabel>
       <Input
         type="date"
         placeholder="Día fin..."
         onChange={handleChange('diaFin')}
+        id="final-day"
       />
 
-      <FormLabel mt={1}>Frecuencia</FormLabel>
+      <FormLabel mt={1} id="frecuency-label">
+        Frecuencia
+      </FormLabel>
       <Select
         placeholder="Seleccione una opción"
         onChange={handleChange('frecuencia')}
+        id="frequency"
+        aria-label="frequency"
       >
         <option value="sinRepetir">Sin repetición</option>
         <option value="semanal">Semanal</option>

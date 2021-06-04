@@ -126,12 +126,12 @@ function User() {
         <Center flexDirection={['column', 'row']}>
           <Box p={4}>
             <Box verticalAlign="sub">
-              <Avatar size="2xl"></Avatar>
+              <Avatar size="2xl" />
             </Box>
           </Box>
           <Box>
             <Box>
-              <Heading>
+              <Heading as="h1">
                 {stringFormatter(
                   fullUser.nombre + ' ' + fullUser.apellido,
                   'name',
@@ -141,7 +141,9 @@ function User() {
             </Box>
             <Box my={2}>
               <NextLink href="/calendar">
-                <Button colorScheme="blue">Ver calendario</Button>
+                <Button colorScheme="blue" aria-label="see-calendar">
+                  Ver calendario
+                </Button>
               </NextLink>
             </Box>
           </Box>

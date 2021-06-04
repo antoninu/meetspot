@@ -68,7 +68,9 @@ const Calendar = () => {
         <BlankSlate></BlankSlate>
       ) : (
         <>
-          <Heading mb={4}>Mi Calendario</Heading>
+          <Heading mb={4} as="h1">
+            Mi Calendario
+          </Heading>
           <NextLink href="/book">
             <Button my={4} colorScheme="blue">
               Agendar un evento

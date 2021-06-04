@@ -447,7 +447,7 @@ const Book = () => {
   return (
     <Center minH="80vh" py={[14]} mt={14}>
       <Box borderWidth="2px" p={7} borderRadius={14} w={[300, 400, 600]}>
-        <Heading mb={4} textAlign="center">
+        <Heading mb={4} textAlign="center" as="h1">
           Agendar un evento
         </Heading>
         <Stepper step={step} setStep={setStep} />
