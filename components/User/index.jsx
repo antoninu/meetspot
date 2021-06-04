@@ -11,6 +11,7 @@ import {
   Link,
   Text,
   Stack,
+  useToast,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import useStateValue from 'hooks/useStateValue';
@@ -25,13 +26,15 @@ function User(props) {
   const [subView, setSubView] = useState('inv');
   const [pendingEvents, setPendingEvents] = useState([]);
 
+  const toast = useToast();
+
   const fetchUser = async () => {
     let fullUserNew;
     if (navigator.onLine) {
       fullUserNew = await fetcher(`usuarios/${user._id}`, 'GET');
       localStorage.setItem('fullUser', JSON.stringify(fullUserNew));
       setFullUser(fullUserNew);
-    }else {
+    } else {
       if (localStorage.getItem('fullUser') === null) {
         setFullUser(null);
       } else {
@@ -39,7 +42,58 @@ function User(props) {
         setFullUser(fullUserNew);
       }
     }
+    console.log(fullUserNew);
     getPendingEvents(fullUserNew);
+  };
+
+  const aceptarEvento = async (id) => {
+    if (!navigator.onLine) {
+      toast({
+        title: 'Sin conexión a internet',
+        description:
+          'Este servicio solo se puede usar con una conexión a internet',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    }
+    const response = await fetcher(`eventos/${id}/aceptarEvento`, 'PATCH');
+    if (response.error) {
+      return toast({
+        title: 'Error',
+        description: response.error,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    setPendingEvents(pendingEvents.filter((element) => element._id != id));
+  };
+
+  const rechazarEvento = async (id) => {
+    if (!navigator.onLine) {
+      toast({
+        title: 'Sin conexión a internet',
+        description:
+          'Este servicio solo se puede usar con una conexión a internet',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      return false;
+    }
+    const response = await fetcher(`eventos/${id}/aceptarEvento`, 'PATCH');
+    if (response.error) {
+      return toast({
+        title: 'Error',
+        description: response.error,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    setPendingEvents(pendingEvents.filter((element) => element._id != id));
   };
 
   const handleInv = () => {
@@ -50,8 +104,8 @@ function User(props) {
     setSubView('stat');
   };
 
-  const getPendingEvents = (user) => {
-    const pendingEventsNew = user.eventos.filter(
+  const getPendingEvents = (usuario) => {
+    const pendingEventsNew = usuario.eventos.filter(
       (element) => element.estado === 'pendiente',
     );
     setPendingEvents(pendingEventsNew);
@@ -121,7 +175,13 @@ function User(props) {
           <hr></hr>
         </Box>
         {subView === 'inv' ? (
-          <Invitations eventos={pendingEvents}>Invitaciones</Invitations>
+          <Invitations
+            eventos={pendingEvents}
+            aceptarEvento={aceptarEvento}
+            rechazarEvento={rechazarEvento}
+          >
+            Invitaciones
+          </Invitations>
         ) : (
           <Statistics></Statistics>
         )}

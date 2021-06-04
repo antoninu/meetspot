@@ -10,7 +10,7 @@ import {
   ButtonGroup,
 } from '@chakra-ui/react';
 
-function Event({ evento }) {
+function Event({ evento, aceptarEvento, rechazarEvento }) {
   return (
     <Flex
       direction="column"
@@ -29,8 +29,21 @@ function Event({ evento }) {
       <Spacer />
       <Flex>
         <ButtonGroup variant="outline" spacing="2">
-          <Button colorScheme="blue">Aceptar</Button>
-          <Button>Rechazar</Button>
+          <Button
+            colorScheme="blue"
+            onClick={() => {
+              aceptarEvento(evento._id);
+            }}
+          >
+            Aceptar
+          </Button>
+          <Button
+            onClick={() => {
+              rechazarEvento(evento._id);
+            }}
+          >
+            Rechazar
+          </Button>
         </ButtonGroup>
       </Flex>
     </Flex>
