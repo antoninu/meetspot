@@ -15,6 +15,8 @@ import NextLink from 'next/link';
 import useStateValue from 'hooks/useStateValue';
 import { useRouter } from 'next/router';
 import stringFormatter from 'utils/stringFormatter';
+import { FormattedMessage } from 'react-intl';
+import fetcher from 'utils/fetcher';
 import Notification from './Notification';
 
 const MenuLinks = ({ isOpen, privateRoute }) => {
@@ -53,10 +55,10 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
         {privateRoute ? (
           <>
             <MenuItem to="/calendar" aria-label="calendar-link">
-              Calendario
+              <FormattedMessage id="menu_calendar"/>
             </MenuItem>
             <MenuItem to="/book" aria-label="book-link">
-              Agendar
+            <FormattedMessage id="menu_to_schedule"/>
             </MenuItem>
 
             {user && (
@@ -75,19 +77,19 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
               </MenuButton>
               <MenuList>
                 <ChakraMenuItem onClick={userProfile} aria-label="profile-link">
-                  Ver perfil
+                <FormattedMessage id="menu_profile"/>
                 </ChakraMenuItem>
                 <ChakraMenuItem onClick={logOut} aria-label="logout-link">
-                  Cerrar sesión
+                <FormattedMessage id="menu_logout"/>
                 </ChakraMenuItem>
               </MenuList>
             </Menu>
           </>
         ) : (
           <>
-            <MenuItem to="/login">Iniciar sesión</MenuItem>
+            <MenuItem to="/login"><FormattedMessage id="login"/></MenuItem>
             <NextLink href="/register">
-              <Button colorScheme="blue">¡Regístrate!</Button>
+              <Button colorScheme="blue"><FormattedMessage id="register"/></Button>
             </NextLink>
           </>
         )}

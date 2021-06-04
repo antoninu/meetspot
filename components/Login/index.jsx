@@ -16,6 +16,7 @@ import {
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import useStateValue from 'hooks/useStateValue';
+import { FormattedMessage } from 'react-intl';
 
 const Login = () => {
   const [, dispatch] = useStateValue();
@@ -72,7 +73,7 @@ const Login = () => {
         textAlign="center"
       >
         <Heading mb={4} as="h1">
-          Iniciar sesión
+        <FormattedMessage id="login" />
         </Heading>
         <FormControl id="login">
           <FormLabel mt={1} id="email-label">
@@ -81,12 +82,12 @@ const Login = () => {
           <Input
             id="email"
             type="email"
-            placeholder="tu@gmail.com..."
+            placeholder="mail@gmail.com"
             onChange={handleChange('correo')}
             id="email"
           />
           <FormLabel mt={1} id="password-label">
-            Contraseña
+          <FormattedMessage id="password" />
           </FormLabel>
           <Input
             id="password"
@@ -105,14 +106,14 @@ const Login = () => {
             colorScheme="blue"
             onClick={() => onSubmit()}
           >
-            Ingresar
+            <FormattedMessage id="enter" />
           </Button>
 
           <Center>
             <FormHelperText>
-              Si no tienes una cuenta, puedes registrarte{' '}
+              <FormattedMessage id="if_you_dont" />{' '}
               <NextLink href="/register" passHref>
-                <Link textDecoration="underline">aquí</Link>
+                <Link textDecoration="underline"><FormattedMessage id="here" /></Link>
               </NextLink>
             </FormHelperText>
           </Center>

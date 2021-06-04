@@ -8,6 +8,7 @@ import {
   Select,
   FormHelperText,
 } from '@chakra-ui/react';
+import { FormattedMessage } from 'react-intl';
 
 function Step1({ setStep, handleChange, step1terminado, eventData }) {
   const [error, setError] = useState(null);
@@ -31,18 +32,17 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
   return (
     <FormControl id="signup">
       <Heading as="h3" size="lg" mb={7} textAlign="center">
-        Crea tu evento
+        <FormattedMessage id="create_event_create" />
       </Heading>
-      <FormLabel id="name-label">Nombre</FormLabel>
+      <FormLabel id="name-label"><FormattedMessage id="create_name" /></FormLabel>
       <Input
         type="name"
         placeholder="Nombre..."
         onChange={handleChange('nombre')}
         id="name"
       />
-
       <FormLabel mt={1} id="description-label">
-        Descripción
+        <FormattedMessage id="create_description" />
       </FormLabel>
       <Input
         type="name"
@@ -50,9 +50,8 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
         onChange={handleChange('descripcion')}
         id="description"
       />
-
       <FormLabel mt={1} id="initial-day-label">
-        Día inicio
+        <FormattedMessage id="create_start_day" />
       </FormLabel>
       <Input
         type="date"
@@ -60,9 +59,8 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
         onChange={handleChange('diaInicio')}
         id="initial-day"
       />
-
       <FormLabel mt={1} id="final-day-label">
-        Día fin
+        <FormattedMessage id="create_end_day" />
       </FormLabel>
       <Input
         type="date"
@@ -71,8 +69,9 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
         id="final-day"
       />
 
+      <FormLabel mt={1}><FormattedMessage id="create_frequency" /></FormLabel>
       <FormLabel mt={1} id="frecuency-label">
-        Frecuencia
+        <FormattedMessage id="create_frequency" />
       </FormLabel>
       <Select
         placeholder="Seleccione una opción"
@@ -101,7 +100,7 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
           if (step1terminado()) setStep(1);
         }}
       >
-        Siguiente
+        <FormattedMessage id="create_next" />
       </Button>
     </FormControl>
   );

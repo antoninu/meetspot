@@ -16,6 +16,7 @@ import { SmallCloseIcon } from '@chakra-ui/icons';
 import { CUIAutoComplete } from 'chakra-ui-autocomplete';
 import { useEffect, useState } from 'react';
 import useStateValue from 'hooks/useStateValue';
+import { FormattedMessage } from 'react-intl';
 
 function Step2({
   setStep,
@@ -46,7 +47,7 @@ function Step2({
   return (
     <div>
       <Heading as="h3" size="lg" mb={7} textAlign="center">
-        Invita a tus compañeros
+        <FormattedMessage id="create_invite_partners" />
       </Heading>
       <FormControl>
         {/**<FormLabel mt={1}>Correos de los usuarios invitados</FormLabel> */}
@@ -79,7 +80,7 @@ function Step2({
             }
           }}
         >
-          Siguiente
+          <FormattedMessage id="create_next" />
         </Button>
       </FormControl>
     </div>

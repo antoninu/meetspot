@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import fetcher from 'utils/fetcher';
 import useStateValue from 'hooks/useStateValue';
 import PasswordStrengthBar from 'react-password-strength-bar';
+import { FormattedMessage } from 'react-intl';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -98,38 +99,30 @@ const Register = () => {
         borderRadius={14}
         textAlign="center"
       >
-        <Heading mb={4} as="h1">
-          Registro
-        </Heading>
+        <Heading mb={4}><FormattedMessage id="register_title" /></Heading>
         <FormControl id="signup">
-          <FormLabel id="name-label">Nombre</FormLabel>
+          <FormLabel><FormattedMessage id="create_name" /></FormLabel>
           <Input
             type="name"
             placeholder="Nombre..."
             onChange={handleChange('nombre')}
             id="name"
           />
-          <FormLabel mt={1} id="surname-label">
-            Apellido
-          </FormLabel>
+          <FormLabel mt={1}><FormattedMessage id="create_lastname" /></FormLabel>
           <Input
             type="name"
             placeholder="Apellido..."
             onChange={handleChange('apellido')}
             id="surname"
           />
-          <FormLabel mt={1} id="email-label">
-            Correo Electrónico
-          </FormLabel>
+          <FormLabel mt={1}><FormattedMessage id="create_email" /></FormLabel>
           <Input
             type="email"
             placeholder="Correo..."
             onChange={handleChange('correo')}
             id="email"
           />
-          <FormLabel mt={1} id="password-label">
-            Contraseña
-          </FormLabel>
+          <FormLabel mt={1}><FormattedMessage id="password" /></FormLabel>
           <Input
             type="password"
             placeholder="***********"
@@ -144,7 +137,7 @@ const Register = () => {
             scoreWords={['Muy débil', 'Débil', 'Aceptable', 'Bien', 'Fuerte']}
           />
           <FormLabel mt={1} id="repeat-password-label">
-            Repite la contraseña
+            <FormattedMessage id="create_repeat_password" />
           </FormLabel>
           <Input
             type="password"

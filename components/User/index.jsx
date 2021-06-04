@@ -18,6 +18,7 @@ import fetcher from 'utils/fetcher';
 import stringFormatter from 'utils/stringFormatter';
 import Statistics from './Statistics';
 import Invitations from './Invitations';
+import { FormattedMessage } from 'react-intl';
 
 function User() {
   const [{ user }] = useStateValue();
@@ -142,7 +143,7 @@ function User() {
             <Box my={2}>
               <NextLink href="/calendar">
                 <Button colorScheme="blue" aria-label="see-calendar">
-                  Ver calendario
+                  <FormattedMessage id="profile_calendar" />
                 </Button>
               </NextLink>
             </Box>
@@ -158,14 +159,14 @@ function User() {
           >
             <Link onClick={handleInv}>
               <Text display="block">
-                Invitaciones{' '}
+                <FormattedMessage id="profile_invitations" />{' '}
                 <span style={{ color: '#718096 !important' }}>
                   {pendingEvents.length}
                 </span>
               </Text>
             </Link>
             <Link onClick={handleStat}>
-              <Text display="block">Estadisticas</Text>
+              <Text display="block"><FormattedMessage id="profile_statistics" /></Text>
             </Link>
           </Stack>
 
@@ -177,7 +178,7 @@ function User() {
             aceptarEvento={aceptarEvento}
             rechazarEvento={rechazarEvento}
           >
-            Invitaciones
+            <FormattedMessage id="profile_invitations" />
           </Invitations>
         ) : (
           <Statistics></Statistics>

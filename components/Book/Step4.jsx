@@ -22,24 +22,25 @@ import {
 } from '@chakra-ui/react';
 import stringFormatter from 'utils/stringFormatter';
 import FaceIcon from 'public/icons/face.svg';
+import { FormattedMessage } from 'react-intl';
 
 function Step4({ eventData, handleSubmit, invitedList, ruleData }) {
   return (
     <Box>
       <Heading as="h3" size="lg" mb={7} textAlign="center">
-        Confirma los datos
+        <FormattedMessage id="create_last_check_title" />
       </Heading>
       <Text w={['100%', '100%', '30vw']}>
-        El evento <b>{eventData.nombre}</b>, con el fin de{' '}
-        <b>{eventData.descripcion}</b>, que tomará curso desde{' '}
-        <b>{eventData.diaInicio}</b> hasta <b>{eventData.diaFin}</b>, y con una
-        frecuencia <b>{eventData.frecuencia}</b>, los días <b>{ruleData.dia}</b>
-        , desde las horas <b>{ruleData.horaInicio}</b> hasta las{' '}
+        <FormattedMessage id="create_last_check_1" /> <b>{eventData.nombre}</b><FormattedMessage id="create_last_check_2" />{' '}
+        <b>{eventData.descripcion}</b><FormattedMessage id="create_last_check_3" />{' '}
+        <b>{eventData.diaInicio}</b> <FormattedMessage id="create_last_check_4" /> <b>{eventData.diaFin}</b><FormattedMessage id="create_last_check_5" />
+        <b>{eventData.frecuencia}</b><FormattedMessage id="create_last_check_6" /><b>{ruleData.dia}</b>
+        <FormattedMessage id="create_last_check_7" /><b>{ruleData.horaInicio}</b><FormattedMessage id="create_last_check_8" />{' '}
         <b>{ruleData.horaFin}</b>.
       </Text>
 
       <Text mt={7} width="100%">
-        <b>Los invitados son:</b>
+        <b><FormattedMessage id="create_last_invited" /></b>
       </Text>
       <List spacing={3}>
         {invitedList.length > 0 ? (
@@ -57,7 +58,7 @@ function Step4({ eventData, handleSubmit, invitedList, ruleData }) {
             </ListItem>
           ))
         ) : (
-          <Text>Ninguno</Text>
+          <Text><FormattedMessage id="create_last_nobody" /></Text>
         )}
       </List>
 
@@ -70,7 +71,7 @@ function Step4({ eventData, handleSubmit, invitedList, ruleData }) {
           handleSubmit();
         }}
       >
-        Agendar
+        <FormattedMessage id="schedule_button" />
       </Button>
     </Box>
   );

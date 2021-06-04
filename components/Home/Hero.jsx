@@ -1,5 +1,6 @@
 import { Flex, Box, Img, Heading, Text } from '@chakra-ui/react';
 import HeroText from 'components/Home/HeroText';
+import { FormattedMessage } from 'react-intl';
 
 const Hero = () => {
   return (
