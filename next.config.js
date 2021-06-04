@@ -1,5 +1,6 @@
-const withOffline = require('next-offline');
-const exportConfig = {
+const withPWA = require('next-pwa')
+
+module.exports = withPWA({
   i18n: {
     locales: ['en-US', 'en', 'es', 'es-CO'],
     defaultLocale: 'en-US',
@@ -12,7 +13,8 @@ const exportConfig = {
 
     return config;
   },
+  pwa: {
+    dest: 'public',
+  },
   trailingSlash: true,
-};
-
-module.exports = withOffline(exportConfig);
+});
