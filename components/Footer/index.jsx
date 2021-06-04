@@ -17,9 +17,29 @@ export default function Footer() {
   return (
     <footer>
       <hr />
-        <Text mb={2}>Not necessary for now.</Text>
-      <Section p={5}>
-        <Center>© 2021 Meetspot. <FormattedMessage id="rights" /></Center>
+      <Section p={5} textAlign="center">
+        <Heading>FAQ</Heading>
+        <Heading as="h5" size="md">
+          <FormattedMessage id="FAQ_question1" />
+        </Heading>
+        <Text>
+          <FormattedMessage id="FAQ_answer1" />
+        </Text>
+        <Heading as="h5" size="md">
+          <FormattedMessage id="FAQ_question2" />
+        </Heading>
+        <Text>
+          <FormattedMessage id="FAQ_answer3" />
+        </Text>
+        <Heading as="h5" size="md">
+          <FormattedMessage id="FAQ_question3" />
+        </Heading>
+        <Text>
+          <FormattedMessage id="FAQ_answer2" />
+        </Text>
+        <Center>
+          © 2021 Meetspot. <FormattedMessage id="rights" />
+        </Center>
         <Center>
           <Link href="#" locale={spanish ? 'en' : 'es-CO'}>
             {spanish ? 'English' : 'Español'}

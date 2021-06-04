@@ -9,6 +9,7 @@ import {
   Spacer,
   ButtonGroup,
 } from '@chakra-ui/react';
+import { FormattedDate } from 'react-intl';
 
 function Event({ evento, aceptarEvento, rechazarEvento }) {
   return (
