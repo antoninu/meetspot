@@ -6,8 +6,7 @@ import {
   Avatar,
   Grid,
   GridItem,
-  MenuList,
-  MenuItem,
+  Center,
   Link,
   Text,
   Stack,
@@ -20,7 +19,7 @@ import stringFormatter from 'utils/stringFormatter';
 import Statistics from './Statistics';
 import Invitations from './Invitations';
 
-function User(props) {
+function User() {
   const [{ user }] = useStateValue();
   const [fullUser, setFullUser] = useState(null);
   const [subView, setSubView] = useState('inv');
@@ -112,11 +111,11 @@ function User(props) {
   };
 
   useEffect(() => {
-    if (user != null) fetchUser();
+    if (user !== null) fetchUser();
   }, [user]);
 
   return (
-    fullUser != null && (
+    fullUser !== null && (
       <Box
         minH="100vh"
         p={[7, 7, 14]}
@@ -124,33 +123,29 @@ function User(props) {
         textAlign={['center', 'center', 'inherit']}
         alignItems="center"
       >
-        <Grid
-          h="150px"
-          templateRows="repeat(2, 1fr)"
-          templateColumns="repeat(2, 1fr)"
-          gap={4}
-          mb={10}
-        >
-          <GridItem rowSpan={2} colSpan={1} align="end">
+        <Center flexDirection={['column', 'row']}>
+          <Box p={4}>
             <Box verticalAlign="sub">
               <Avatar size="2xl"></Avatar>
             </Box>
-          </GridItem>
-          <GridItem rowSpan={1} colSpan={1}>
-            <Heading>
-              {stringFormatter(
-                fullUser.nombre + ' ' + fullUser.apellido,
-                'name',
-              )}
-            </Heading>
-            {fullUser.correo}
-          </GridItem>
-          <GridItem colSpan={1}>
-            <NextLink href="/calendar">
-              <Button colorScheme="blue">Ver calendario</Button>
-            </NextLink>
-          </GridItem>
-        </Grid>
+          </Box>
+          <Box>
+            <Box>
+              <Heading>
+                {stringFormatter(
+                  fullUser.nombre + ' ' + fullUser.apellido,
+                  'name',
+                )}
+              </Heading>
+              {fullUser.correo}
+            </Box>
+            <Box my={2}>
+              <NextLink href="/calendar">
+                <Button colorScheme="blue">Ver calendario</Button>
+              </NextLink>
+            </Box>
+          </Box>
+        </Center>
         <Box>
           <Stack
             spacing={8}

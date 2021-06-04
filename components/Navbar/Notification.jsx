@@ -117,7 +117,6 @@ function Notification() {
             if (index == notifications.length - 1)
               return (
                 <Box key={index} pb={1}>
-                  <Icon as={FaRegCalendarPlus} />
                   <span>{value}</span>
                 </Box>
               );

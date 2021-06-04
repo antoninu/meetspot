@@ -27,6 +27,7 @@
     "react-dom": "17.0.1",
     "react-hook-form": "^7.0.0-rc.8",
     "react-icons": "^4.2.0",
+    "react-intl": "^5.19.0",
     "react-password-strength-bar": "^0.3.3",
     "rosetta": "^1.1.0",
     "swr": "^0.5.4"

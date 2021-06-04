@@ -19,7 +19,7 @@ function Event({ evento, aceptarEvento, rechazarEvento }) {
       borderRadius="lg"
       overflow="hidden"
       p={4}
-      height="200px"
+      minHeight="220px"
     >
       <Heading as="h4" size="md">
         {stringFormatter(evento.nombre, 'name')}
