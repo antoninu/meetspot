@@ -26,10 +26,19 @@ function User(props) {
   const [pendingEvents, setPendingEvents] = useState([]);
 
   const fetchUser = async () => {
-    console.log(user);
-    const fullUserNew = await fetcher(`usuarios/${user._id}`, 'GET');
-    console.log(fullUserNew);
-    setFullUser(fullUserNew);
+    let fullUserNew;
+    if (navigator.onLine) {
+      fullUserNew = await fetcher(`usuarios/${user._id}`, 'GET');
+      localStorage.setItem('fullUser', JSON.stringify(fullUserNew));
+      setFullUser(fullUserNew);
+    }else {
+      if (localStorage.getItem('fullUser') === null) {
+        setFullUser(null);
+      } else {
+        fullUserNew = JSON.parse(localStorage.getItem('fullUser'));
+        setFullUser(fullUserNew);
+      }
+    }
     getPendingEvents(fullUserNew);
   };
 
