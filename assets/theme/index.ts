@@ -2,7 +2,14 @@ import { ChakraTheme, extendTheme } from '@chakra-ui/react';
 
 const config = {};
 
-const colors = {};
+const colors = {
+  blue: {
+    500: '#2b71b3',
+  },
+  gray: {
+    500: '#525d6c',
+  },
+};
 
 const components = {};
 

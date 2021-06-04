@@ -14,7 +14,7 @@ import {
   Avatar,
   AvatarBadge,
 } from '@chakra-ui/react';
-import { FaBell, FaRegCalendarPlus } from 'react-icons/fa';
+import { BellIcon } from '@chakra-ui/icons';
 import useStateValue from 'hooks/useStateValue';
 import fetcher from 'utils/fetcher';
 import stringFormatter from 'utils/stringFormatter';
@@ -27,7 +27,7 @@ function Notification() {
   const [eventos, setEventos] = useState([]);
 
   useEffect(() => {
-    if (user != null) fetchUser();
+    if (user !== null) fetchUser();
   }, [eventos]);
 
   const fetchUser = async () => {
@@ -52,11 +52,14 @@ function Notification() {
     let pendingEventsNew = usuario.eventos.filter(
       (element) => element.estado === 'pendiente',
     );
+    console.log('pre-sorted', pendingEventsNew);
     pendingEventsNew = pendingEventsNew.sort(function (a, b) {
       var dateA = new Date(a.fechaCreacion),
         dateB = new Date(b.fechaCreacion);
-      return dateB - dateA;
+      return dateB.getTime() - dateA.getTime();
     });
+    console.log('pre-sorted', pendingEventsNew);
+
     const top3 = pendingEventsNew; //.slice(0, 3);
     let notifcaciones = [];
     let creador = 'Alguien';
@@ -98,7 +101,11 @@ function Notification() {
   return (
     <Popover>
       <PopoverTrigger>
-        <Avatar size="sm" icon={<FaBell />} style={{ cursor: 'pointer' }}>
+        <Avatar
+          size="sm"
+          icon={<BellIcon aria-label="notification-icon" />}
+          style={{ cursor: 'pointer' }}
+        >
           {notifications.length > 0 && (
             <AvatarBadge boxSize="1.25em" bg="tomato">
               <span style={{ color: 'white', fontSize: 'xx-small' }}>

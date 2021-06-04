@@ -11,17 +11,15 @@ const Layout = ({ children, title = 'Meetspot', privateRoute = false }) => {
   const router = useRouter();
   const [, dispatch] = useStateValue();
 
-  useEffect(()=>{
-    const user = JSON.parse(localStorage.getItem("user"));
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
     dispatch({ type: 'LOG_IN', newUser: user });
     if (process.browser && privateRoute && !user) {
       router.push('/');
-    }
-    else if (process.browser && !privateRoute && user) {
+    } else if (process.browser && !privateRoute && user) {
       router.push('/calendar');
     }
-  },[])
-
+  }, []);
 
   return (
     <>
@@ -31,7 +29,7 @@ const Layout = ({ children, title = 'Meetspot', privateRoute = false }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Navbar privateRoute={privateRoute} />
-      <Flex direction="column" minH="100vh">
+      <Flex direction="column" minH="100vh" as="main">
         <Box flex="1 0 auto">{children}</Box>
         <Box flexShrink={0}>
           <Footer />

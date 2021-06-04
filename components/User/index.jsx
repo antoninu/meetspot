@@ -112,11 +112,11 @@ function User() {
   };
 
   useEffect(() => {
-    if (user != null) fetchUser();
+    if (user !== null) fetchUser();
   }, [user]);
 
   return (
-    fullUser != null && (
+    fullUser !== null && (
       <Box
         minH="100vh"
         p={[7, 7, 14]}
@@ -127,12 +127,12 @@ function User() {
         <Center flexDirection={['column', 'row']}>
           <Box p={4}>
             <Box verticalAlign="sub">
-              <Avatar size="2xl"></Avatar>
+              <Avatar size="2xl" />
             </Box>
           </Box>
           <Box>
             <Box>
-              <Heading>
+              <Heading as="h1">
                 {stringFormatter(
                   fullUser.nombre + ' ' + fullUser.apellido,
                   'name',
@@ -142,7 +142,9 @@ function User() {
             </Box>
             <Box my={2}>
               <NextLink href="/calendar">
-                <Button colorScheme="blue"><FormattedMessage id="profile_calendar" /></Button>
+                <Button colorScheme="blue" aria-label="see-calendar">
+                  <FormattedMessage id="profile_calendar" />
+                </Button>
               </NextLink>
             </Box>
           </Box>

@@ -69,7 +69,13 @@ const Calendar = () => {
         <BlankSlate></BlankSlate>
       ) : (
         <>
+<<<<<<< HEAD
           <Heading mb={4}><FormattedMessage id="my_calendar" /></Heading>
+=======
+          <Heading mb={4} as="h1">
+            Mi Calendario
+          </Heading>
+>>>>>>> 2736f2a09d326b97ba5d4ee6d2aa22d2c9306b48
           <NextLink href="/book">
             <Button my={4} colorScheme="blue">
               <FormattedMessage id="schedule_event" />

@@ -257,7 +257,7 @@ const Book = () => {
     // Evento
     const evento = JSON.parse(JSON.stringify(eventData));
 
-    evento.estado = 'aceptado';
+    //evento.estado = 'aceptado';
     evento.zonaHoraria = '+5';
     if (eventData.frecuencia === 'sinRepetir') {
       evento.diaInicio = localDate(ruleData.dia);
@@ -267,6 +267,7 @@ const Book = () => {
       evento.diaInicio = getFirstDayMonth(localDate(ruleData.dia));
     }
     evento.diaFin = localDate(eventData.diaFin);
+    evento.fechaCreacion = new Date();
 
     // Regla
     const rule = JSON.parse(JSON.stringify(ruleData));
@@ -449,7 +450,7 @@ const Book = () => {
   return (
     <Center minH="80vh" py={[14]} mt={14}>
       <Box borderWidth="2px" p={7} borderRadius={14} w={[300, 400, 600]}>
-        <Heading mb={4} textAlign="center">
+        <Heading mb={4} textAlign="center" as="h1">
           <FormattedMessage id="create_event_title" />
         </Heading>
         <Stepper step={step} setStep={setStep} />

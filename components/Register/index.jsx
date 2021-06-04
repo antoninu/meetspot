@@ -95,6 +95,7 @@ const Register = () => {
         borderWidth="2px"
         px={14}
         py={7}
+        mt={14}
         borderRadius={14}
         textAlign="center"
       >
@@ -105,24 +106,28 @@ const Register = () => {
             type="name"
             placeholder="Nombre..."
             onChange={handleChange('nombre')}
+            id="name"
           />
           <FormLabel mt={1}><FormattedMessage id="create_lastname" /></FormLabel>
           <Input
             type="name"
             placeholder="Apellido..."
             onChange={handleChange('apellido')}
+            id="surname"
           />
           <FormLabel mt={1}><FormattedMessage id="create_email" /></FormLabel>
           <Input
             type="email"
             placeholder="Correo..."
             onChange={handleChange('correo')}
+            id="email"
           />
           <FormLabel mt={1}><FormattedMessage id="password" /></FormLabel>
           <Input
             type="password"
             placeholder="***********"
             onChange={handleChange('contrasena')}
+            id="password"
           />
           <PasswordStrengthBar
             password={userData.contrasena}
@@ -131,11 +136,14 @@ const Register = () => {
             }
             scoreWords={['Muy débil', 'Débil', 'Aceptable', 'Bien', 'Fuerte']}
           />
-          <FormLabel mt={1}><FormattedMessage id="create_repeat_password" /></FormLabel>
+          <FormLabel mt={1} id="repeat-password-label">
+            <FormattedMessage id="create_repeat_password" />
+          </FormLabel>
           <Input
             type="password"
             placeholder="***********"
             onChange={handleChange('contrasena_rep')}
+            id="repeat-password"
           />
           {error && <FormHelperText color="red">{error}</FormHelperText>}
 

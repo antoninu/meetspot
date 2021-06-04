@@ -34,38 +34,50 @@ function Step1({ setStep, handleChange, step1terminado, eventData }) {
       <Heading as="h3" size="lg" mb={7} textAlign="center">
         <FormattedMessage id="create_event_create" />
       </Heading>
-      <FormLabel><FormattedMessage id="create_name" /></FormLabel>
+      <FormLabel id="name-label"><FormattedMessage id="create_name" /></FormLabel>
       <Input
         type="name"
         placeholder="Nombre..."
         onChange={handleChange('nombre')}
+        id="name"
       />
-
-      <FormLabel mt={1}><FormattedMessage id="create_description" /></FormLabel>
+      <FormLabel mt={1} id="description-label">
+        <FormattedMessage id="create_description" />
+      </FormLabel>
       <Input
         type="name"
         placeholder="Descripción..."
         onChange={handleChange('descripcion')}
+        id="description"
       />
-
-      <FormLabel mt={1}><FormattedMessage id="create_start_day" /></FormLabel>
+      <FormLabel mt={1} id="initial-day-label">
+        <FormattedMessage id="create_start_day" />
+      </FormLabel>
       <Input
         type="date"
         placeholder="Día inicio..."
         onChange={handleChange('diaInicio')}
+        id="initial-day"
       />
-
-      <FormLabel mt={1}><FormattedMessage id="create_end_day" /></FormLabel>
+      <FormLabel mt={1} id="final-day-label">
+        <FormattedMessage id="create_end_day" />
+      </FormLabel>
       <Input
         type="date"
         placeholder="Día fin..."
         onChange={handleChange('diaFin')}
+        id="final-day"
       />
 
       <FormLabel mt={1}><FormattedMessage id="create_frequency" /></FormLabel>
+      <FormLabel mt={1} id="frecuency-label">
+        <FormattedMessage id="create_frequency" />
+      </FormLabel>
       <Select
         placeholder="Seleccione una opción"
         onChange={handleChange('frecuencia')}
+        id="frequency"
+        aria-label="frequency"
       >
         <option value="sinRepetir">Sin repetición</option>
         <option value="semanal">Semanal</option>
