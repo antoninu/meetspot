@@ -14,47 +14,34 @@ import {
 import stringFormatter from 'utils/stringFormatter';
 import { SmallCloseIcon } from '@chakra-ui/icons';
 import { CUIAutoComplete } from 'chakra-ui-autocomplete';
-import { useState } from 'react';
-
-const countries = [
-  { value: 'ghana', label: 'Ghanaaas', id: '1' },
-  { value: 'nigeria', label: 'Nigeria', id: '2' },
-  { value: 'kenya', label: 'Kenya', id: '3' },
-  { value: 'southAfrica', label: 'South Africa', id: '4' },
-  { value: 'unitedStates', label: 'United States', id: '5' },
-  { value: 'canada', label: 'Canada', id: '6' },
-  { value: 'germany', label: 'Germany', id: '7' },
-];
+import { useEffect, useState } from 'react';
+import useStateValue from 'hooks/useStateValue';
 
 function Step2({
-  handleChangeInvited,
-  handleAddInvited,
   setStep,
+  handleFinalInvited,
+  handleAddInvited,
   handleAvailability,
   step2terminado,
-  invitedListState,
   userEmails,
+  emailsState,
+  user,
 }) {
-  const [invitedList, setInvitedList] = invitedListState;
-
-  const [pickerItems, setPickerItems] = useState(userEmails);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [emails, setEmails] = emailsState;
+  const [pickerItems, setPickerItems] = useState(
+    userEmails.filter((element) => element.value != user.correo),
+  );
+  const [selectedItems, setSelectedItems] = useState(emails);
 
   const handleSelectedItemsChange = (selectedItems) => {
-    console.log('entra');
+    let good = true;
     if (selectedItems) {
-      console.log('selected', selectedItems);
       selectedItems.forEach((element) => {
-        console.log('e', element.value);
-
-        handleAddInvited(element.value);
-        console.log('handled');
+        good = handleAddInvited(element.value) && good;
       });
-      setSelectedItems(selectedItems);
+      if (good) setSelectedItems(selectedItems);
     }
   };
-
-  const toast = useToast();
 
   return (
     <div>
@@ -77,71 +64,7 @@ function Step2({
               disableCreateItem={true}
             />
           </Box>
-          {/*<Input
-            type="email"
-            placeholder="invitado@gmail.com..."
-            width="85%"
-            onChange={handleChangeInvited()}
-          />
-          <Button
-            mt={4}
-            type="submit"
-            colorScheme="blue"
-            margin="0"
-            onClick={handleAddInvited()}
-          >
-            +
-          </Button>*/}
         </Flex>
-        {/*
-        <Box
-          id="invited-list"
-          borderWidth="2px"
-          px={7}
-          py={3}
-          marginTop="12px"
-          borderRadius={14}
-        >
-          <FormLabel mt={1}>Usuarios invitados</FormLabel>
-          {invitedList.length > 0 ? (
-            invitedList.map((invitado, id) => (
-              <Text key={id} py={2}>
-                {invitado
-                  ? stringFormatter(
-                      invitado.nombre + ' ' + invitado.apellido,
-                      'name',
-                    ) +
-                    ' - ' +
-                    invitado.correo
-                  : ''}
-                <IconButton
-                  icon={<SmallCloseIcon />}
-                  colorScheme="red"
-                  variant="outline"
-                  size="sm"
-                  mx={2}
-                  onClick={() => {
-                    setInvitedList(
-                      invitedList.filter((el) => {
-                        return el.nombre != invitado.nombre;
-                      }),
-                    );
-                    toast({
-                      title: 'Invitado eliminado',
-                      description: `${invitado.nombre} ya no será invitado a tu evento.`,
-                      status: 'warning',
-                      duration: 3000,
-                      isClosable: true,
-                    });
-                  }}
-                />
-              </Text>
-            ))
-          ) : (
-            <Text>Ninguno</Text>
-          )}
-        </Box>
-          */}
         <Button
           width="100%"
           mt={4}
@@ -149,6 +72,8 @@ function Step2({
           colorScheme="blue"
           onClick={() => {
             if (step2terminado()) {
+              setEmails(selectedItems);
+              handleFinalInvited(selectedItems);
               handleAvailability();
               setStep(2);
             }

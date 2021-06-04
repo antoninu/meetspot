@@ -20,6 +20,7 @@ const Book = () => {
   const [disp, setDisp] = useState(null);
   const [availabilityCheck, setAvailabilityCheck] = useState(false);
   const [userList, setUserList] = useState([]);
+  const [emails, setEmails] = useState([]);
 
   const toast = useToast();
 
@@ -42,7 +43,6 @@ const Book = () => {
 
   const fetchUsers = async () => {
     const response = await fetcher('usuarios', 'GET');
-    console.log(response);
     if (response.error) {
       return toast({
         title: 'Error',
@@ -52,7 +52,7 @@ const Book = () => {
         isClosable: true,
       });
     }
-    const userEmails = response.map((element) => {
+    let userEmails = response.map((element) => {
       return { value: element.correo, label: element.correo };
     });
     setUserList(userEmails);
@@ -337,13 +337,28 @@ const Book = () => {
   };
 
   //Manejan el estado del usuario a ser invitado
-  const handleChangeInvited = () => async (event) => {
-    setError(null);
-    setInvitedData(event.target.value);
+  const handleFinalInvited = async (selected) => {
+    let listaCompleta = [];
+    for (const element of selected) {
+      const email = element.value;
+      const response = await fetcher(`usuarios/correo/${email}`, 'GET');
+      if (response.error) {
+        setError(response.error);
+        return toast({
+          title: 'Error',
+          description: response.error,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+      listaCompleta.push(response);
+      // Asumiendo que todo esta bien
+    }
+    setInvitedList(listaCompleta);
   };
 
-  const handleAddInvited = (email) => async () => {
-    console.log('entraaa', email);
+  const handleAddInvited = (email) => {
     if (!verificarConexion()) {
       toast({
         title: 'Error',
@@ -352,31 +367,20 @@ const Book = () => {
         duration: 3000,
         isClosable: true,
       });
-      return;
+      return false;
     }
-    if (email === user.correo)
-      return toast({
+
+    if (email === user.correo) {
+      toast({
         title: 'Error',
         description: 'No es necesario que te agregues a ti mismo',
         status: 'error',
         duration: 3000,
         isClosable: true,
       });
-    const response = await fetcher(`usuarios/correo/${email}`, 'GET');
-
-    if (response.error) {
-      setError(response.error);
-      return toast({
-        title: 'Error',
-        description: response.error,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
+      return false;
     }
-    // Asumiendo que todo esta bien
-    setError(null);
-    setInvitedList([...invitedList, response]);
+    return true;
   };
 
   const handleAvailability = async () => {
@@ -458,12 +462,13 @@ const Book = () => {
         {step === 1 && (
           <Step2
             setStep={setStep}
-            handleChangeInvited={handleChangeInvited}
+            handleFinalInvited={handleFinalInvited}
             handleAddInvited={handleAddInvited}
             handleAvailability={handleAvailability}
             step2terminado={step2terminado}
             userEmails={userList}
-            invitedListState={[invitedList, setInvitedList]}
+            emailsState={[emails, setEmails]}
+            user={user}
           />
         )}
         {step === 2 && (
