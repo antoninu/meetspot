@@ -36,7 +36,7 @@ export default function Footer() {
         <Heading as="h5" size="md" mb={4}>
           <FormattedMessage id="FAQ_question3" />
         </Heading>
-        <Text>
+        <Text mb={7}>
           <FormattedMessage id="FAQ_answer2" />
         </Text>
         <Center>
