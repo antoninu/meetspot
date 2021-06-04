@@ -31,6 +31,10 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
     router.push('/');
   };
 
+  const userProfile = () => {
+    router.push('/user');
+  };
+
   return (
     <Box
       display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
@@ -50,9 +54,11 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
             <MenuItem to="/book">Agendar</MenuItem>
 
             {user && (
-              <Text as="b">
-                {stringFormatter(user.nombre + ' ' + user.apellido, 'name')}
-              </Text>
+              <MenuItem to="/user">
+                <Text as="b">
+                  {stringFormatter(user.nombre + ' ' + user.apellido, 'name')}
+                </Text>
+              </MenuItem>
             )}
 
             <Menu>
@@ -60,6 +66,9 @@ const MenuLinks = ({ isOpen, privateRoute }) => {
                 <Avatar />
               </MenuButton>
               <MenuList>
+                <ChakraMenuItem onClick={userProfile}>
+                  Ver perfil
+                </ChakraMenuItem>
                 <ChakraMenuItem onClick={logOut}>Cerrar sesión</ChakraMenuItem>
               </MenuList>
             </Menu>

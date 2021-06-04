@@ -6,8 +6,8 @@ import NextLink from 'next/link';
 export default function LogoSection() {
   return (
     <Center ml={[0, 14]} h={5} w={200}>
-      <NextLink href="/calendar">
-        <Logo style={{ cursor: 'pointer' }} />
+      <NextLink href="/calendar" style={{ cursor: 'pointer' }}>
+        <Logo />
       </NextLink>
     </Center>
   );
