@@ -34,6 +34,7 @@ function Event({ evento, aceptarEvento, rechazarEvento }) {
           day="numeric"
           weekday="long"
         />
+        <Text> - </Text>
         <FormattedDate
           value={new Date(evento.diaFin)}
           year="numeric"
