@@ -27,7 +27,7 @@ function Notification() {
   const [eventos, setEventos] = useState([]);
 
   useEffect(() => {
-    if (user != null) fetchUser();
+    if (user !== null) fetchUser();
   }, [eventos]);
 
   const fetchUser = async () => {
@@ -52,11 +52,14 @@ function Notification() {
     let pendingEventsNew = usuario.eventos.filter(
       (element) => element.estado === 'pendiente',
     );
+    console.log('pre-sorted', pendingEventsNew);
     pendingEventsNew = pendingEventsNew.sort(function (a, b) {
       var dateA = new Date(a.fechaCreacion),
         dateB = new Date(b.fechaCreacion);
-      return dateB - dateA;
+      return dateB.getTime() - dateA.getTime();
     });
+    console.log('pre-sorted', pendingEventsNew);
+
     const top3 = pendingEventsNew; //.slice(0, 3);
     let notifcaciones = [];
     let creador = 'Alguien';
