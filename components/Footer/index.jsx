@@ -3,6 +3,7 @@ import { Center } from '@chakra-ui/react';
 import Section from 'components/shared/Section';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { FormattedMessage } from 'react-intl';
 
 export default function Footer() {
   const { locale } = useRouter();
@@ -17,7 +18,7 @@ export default function Footer() {
     <footer>
       <hr />
       <Section p={5}>
-        <Center>© 2021 Meetspot. Todos los derechos reservados</Center>
+        <Center>© 2021 Meetspot. <FormattedMessage id="rights" /></Center>
         <Center>
           <Link href="#" locale={spanish ? 'en' : 'es-CO'}>
             {spanish ? 'English' : 'Español'}

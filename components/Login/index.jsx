@@ -16,6 +16,7 @@ import {
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import useStateValue from 'hooks/useStateValue';
+import { FormattedMessage } from 'react-intl';
 
 const Login = () => {
   const [, dispatch] = useStateValue();
@@ -65,7 +66,7 @@ const Login = () => {
         borderRadius={14}
         textAlign="center"
       >
-        <Heading mb={4}>Iniciar sesión</Heading>
+        <Heading mb={4}><FormattedMessage id="login" /></Heading>
         <FormControl id="login">
           <FormLabel mt={1}>Email</FormLabel>
           <Input

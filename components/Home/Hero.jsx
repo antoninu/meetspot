@@ -1,5 +1,6 @@
 import { Flex, Box, Img, Heading, Text } from '@chakra-ui/react';
 import HeroText from 'components/Home/HeroText';
+import { FormattedMessage } from 'react-intl';
 
 const Hero = () => {
   return (
@@ -30,12 +31,12 @@ const Hero = () => {
         minH="80vh"
       >
         <Heading>FAQ</Heading>
-        <Heading as="h5" size="md">Do I have to pay for the service?</Heading>
-        <Text>Not necessary for now.</Text>
-        <Heading as="h5" size="md">Do my partners need to have an account to access this service?</Heading>
-        <Text>Yes they do in order for us to let you know their availabilities.</Text>
-        <Heading as="h5" size="md">Can I load my schedule with my current Google Calendar?</Heading>
-        <Text>Not for the moment, but it will be an incoming feature.</Text>
+        <Heading as="h5" size="md"><FormattedMessage id="FAQ_question1" /></Heading>
+        <Text><FormattedMessage id="FAQ_answer1" /></Text>
+        <Heading as="h5" size="md"><FormattedMessage id="FAQ_question2" /></Heading>
+        <Text><FormattedMessage id="FAQ_answer3" /></Text>
+        <Heading as="h5" size="md"><FormattedMessage id="FAQ_question3" /></Heading>
+        <Text><FormattedMessage id="FAQ_answer2" /></Text>
 
 
       </div>
